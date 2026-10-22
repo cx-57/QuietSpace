@@ -20,21 +20,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      # Bootstrap exception: a lockfile cannot be generated without npm.
-      # After the first successful run, review and commit its artifact.
-      - name: Install (locked when available)
-        shell: bash
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            echo '::warning::Bootstrap install: review and commit the generated lockfile.'
-            npm install
-          fi
+      - run: npm ci
       - run: npm run check
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+        env:
+          PLAYWRIGHT_CHANNEL: chromium
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: failure()
         with:
-          name: bootstrap-package-lock
-          path: package-lock.json
+          name: browser-check-evidence
+          path: |
+            test-results/
+            artifacts/*.png
           if-no-files-found: ignore

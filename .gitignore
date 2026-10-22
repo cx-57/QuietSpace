@@ -1,5 +1,7 @@
 node_modules/
+.npm-cache/
 .next/
+.next-connected-test/
 out/
 coverage/
 *.tsbuildinfo
@@ -11,5 +13,7 @@ __pycache__/
 .venv/
 .DS_Store
 /artifacts/
+/test-results/
+/playwright-report/
 /supabase/.temp/
 /supabase/.branches/

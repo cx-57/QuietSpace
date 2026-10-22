@@ -67,7 +67,7 @@ class RepositoryContracts(unittest.TestCase):
                 if re.search(r"^[\s\"']*use client", text):
                     self.assertNotIn("SUPABASE_SERVICE_ROLE_KEY", text)
                     self.assertNotIn("DATABASE_URL", text)
-        # No key or database access is needed by setup pages.
+        # Page components keep configuration/credential access behind server-only adapters.
         for path in (ROOT / "src/app").rglob("*.tsx"):
             self.assertNotIn("process.env", path.read_text(encoding="utf-8"))
 

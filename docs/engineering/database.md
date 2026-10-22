@@ -11,7 +11,9 @@ Use a new empty database whose owner can create roles and `SET ROLE`; never sele
 $env:PGSERVICE = 'quietspace_test'
 psql -X -v ON_ERROR_STOP=1 -f supabase/tests/bootstrap_roles.sql
 psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/202610200001_foundation.sql
+psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/202610220001_report_abuse_controls.sql
 psql -X -v ON_ERROR_STOP=1 -f supabase/tests/foundation.sql
+psql -X -v ON_ERROR_STOP=1 -f supabase/tests/reports.sql
 python tools/import_venues.py --output artifacts/venues.sql
 psql -X -v ON_ERROR_STOP=1 -f supabase/tests/import_replay.sql
 ```
@@ -28,7 +30,7 @@ For Supabase, the standard roles already exist: **omit bootstrap_roles.sql**. Ap
 | application service_role | SELECT capability only, bypasses RLS; never use for public reads | No direct table grants | Execute narrow pending-only function | Denied |
 | trusted database operator | Administrative | Administrative | Administrative | Explicit status + moderated_at update |
 
-No browser report insert policy exists. The future server endpoint must add body-size checks, exact payload validation, same-origin handling, persistent rate controls and safe errors before it calls the RPC. No endpoint is enabled now. CREATE on the exposed schema is revoked from client/application roles to prevent object shadowing. Trusted owners/platform administrators are outside the public threat boundary; they can override RLS and must protect credentials. Apply this migration as the trusted schema owner/superuser with BYPASSRLS privileges; the function owner needs that capability under FORCE RLS.
+No browser report insert policy exists. Stage 10 adds a server endpoint with streamed body-size checks, exact payload validation, Origin checks and a persistent rate-limited RPC wrapper. It is disabled by default; see [report setup and moderation](reporting.md) for ingress, cleanup and runtime gates. CREATE on the exposed schema is revoked from client/application roles to prevent object shadowing. Trusted owners/platform administrators are outside the public threat boundary; they can override RLS and must protect credentials. Apply the migrations as the trusted schema owner/superuser with BYPASSRLS privileges; function owners need that capability under FORCE RLS.
 
 `public_space_features` is an invoker view, so it cannot bypass parent policies. Public policy hides expired features; missing rows map to unknown. Read freshness uses database time, not client time. Raw storage keeps source history available to operators. Stale venues automatically disappear from public queries after 90 days. No hours are stored; link to official sources instead.
 

@@ -40,6 +40,17 @@ export interface SpaceDetails extends SpaceSummary {
   reliability: Reliability;
 }
 
+/** Public read adapter output, before local preferences are applied. */
+export interface PublicSpace extends SpaceSummary {
+  features: Record<FeatureKey, FacilityEvidence>;
+  reports: ApprovedReport[];
+}
+export interface Directory {
+  mode: "curated" | "supabase";
+  spaces: PublicSpace[];
+  asOf: string;
+}
+
 export interface ReportInput {
   spaceId: string;
   observedAt: string;

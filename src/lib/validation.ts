@@ -57,9 +57,10 @@ export function parseReportInput(input: unknown, now: Date = new Date()): Result
     observedDimensions++;
   }
   if (observedDimensions === 0) return invalid("intensities", "Observe at least one dimension.");
+  const validatedIntensities = input.intensities;
   return { ok: true, value: {
-    spaceId: input.spaceId, observedAt: input.observedAt,
-    intensities: { ...input.intensities } as Intensities,
+    spaceId: input.spaceId.toLowerCase(), observedAt: new Date(observed).toISOString(),
+    intensities: Object.fromEntries(DIMENSIONS.map(d => [d, validatedIntensities[d]])) as Intensities,
   } };
 }
 

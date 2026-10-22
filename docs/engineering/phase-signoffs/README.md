@@ -1,4 +1,10 @@
-# Phases 00–04: evidence and review handoff
+# Implementation evidence
+
+Latest batch: [Stages 05-10](05-10.md), implemented 2026-10-22. Application/build/browser checks pass; real database/RLS/reporting acceptance is still pending. Execution stopped after Stage 10.
+
+The rest of this file is the historical 00-04 handoff, recorded on 2026-10-20. Its runtime availability statements describe that earlier session; see the latest batch for current state.
+
+## Phases 00–04: evidence and review handoff
 
 Date: 2026-10-20. Implementer: Codex. Starting commit: `4484ced`. No commit, push, external write, deployment or human approval was performed.
 
