@@ -1,0 +1,125 @@
+{
+  "format_version": 1,
+  "venues": [
+    {
+      "slug": "bpl-central",
+      "name": "Boston Public Library — Central Library in Copley Square",
+      "address": "700 Boylston Street, Boston, MA 02116",
+      "category": "library",
+      "latitude": null,
+      "longitude": null,
+      "time_zone": "America/New_York",
+      "public_access": "public",
+      "source_url": "https://www.bpl.org/locations/central/",
+      "source_evidence": "Official public-library location page identifies the Central Library, its public street address and visiting information. Source review only; individual rooms and services may have separate conditions.",
+      "checked_at": "2026-10-20T18:00:00Z",
+      "provenance_status": "verified",
+      "published": true,
+      "is_fixture": false,
+      "features": {
+        "accessible_entrance": {
+          "verification": "verified", "value": true,
+          "source_url": "https://www.bpl.org/locations/central/",
+          "checked_at": "2026-10-20T18:00:00Z",
+          "evidence": "The official Facilities section lists accessible entrances. This does not verify step-free routes throughout the building or toilets."
+        }
+      }
+    },
+    {
+      "slug": "bpl-brighton",
+      "name": "Boston Public Library — Brighton Branch",
+      "address": "40 Academy Hill Road, Brighton, MA 02135",
+      "category": "library",
+      "latitude": null,
+      "longitude": null,
+      "time_zone": "America/New_York",
+      "public_access": "public",
+      "source_url": "https://www.bpl.org/locations/brighton/",
+      "source_evidence": "Official public-library branch page provides its name, street address and public visiting information. No observation of present sensory conditions was made.",
+      "checked_at": "2026-10-20T18:00:00Z",
+      "provenance_status": "verified",
+      "published": true,
+      "is_fixture": false,
+      "features": {
+        "accessible_entrance": {
+          "verification": "verified", "value": true,
+          "source_url": "https://www.bpl.org/locations/brighton/",
+          "checked_at": "2026-10-20T18:00:00Z",
+          "evidence": "The branch Facilities section lists accessible entrances. No claim is made about step-free internal routes or toilets."
+        }
+      }
+    },
+    {
+      "slug": "bpl-connolly",
+      "name": "Boston Public Library — Connolly Branch",
+      "address": "433 Centre Street, Jamaica Plain, MA 02130",
+      "category": "library",
+      "latitude": null,
+      "longitude": null,
+      "time_zone": "America/New_York",
+      "public_access": "public",
+      "source_url": "https://www.bpl.org/locations/connolly/",
+      "source_evidence": "Official branch page provides the public-library identity, street address and visiting information. Retrieved page included an October 15 closure notice, now past; no current-open claim or hours are imported.",
+      "checked_at": "2026-10-20T18:00:00Z",
+      "provenance_status": "verified",
+      "published": true,
+      "is_fixture": false,
+      "features": {
+        "accessible_entrance": {
+          "verification": "verified", "value": true,
+          "source_url": "https://www.bpl.org/locations/connolly/",
+          "checked_at": "2026-10-20T18:00:00Z",
+          "evidence": "Official branch Facilities section lists accessible entrances. Specific internal routes and toilet accessibility remain unknown."
+        }
+      }
+    },
+    {
+      "slug": "bpl-east-boston",
+      "name": "Boston Public Library — East Boston Branch",
+      "address": "365 Bremen Street, East Boston, MA 02128",
+      "category": "library",
+      "latitude": null,
+      "longitude": null,
+      "time_zone": "America/New_York",
+      "public_access": "public",
+      "source_url": "https://www.bpl.org/locations/east-boston/",
+      "source_evidence": "Official branch page provides its public-library identity, street address and visiting information. The canonical page was checked after the numeric alias returned an older cached page. No current-open claim is imported.",
+      "checked_at": "2026-10-20T18:03:00Z",
+      "provenance_status": "verified",
+      "published": true,
+      "is_fixture": false,
+      "features": {
+        "accessible_entrance": {
+          "verification": "verified", "value": true,
+          "source_url": "https://www.bpl.org/locations/east-boston/",
+          "checked_at": "2026-10-20T18:03:00Z",
+          "evidence": "Official Facilities section lists accessible entrances. Its combined quiet/study-room label does not establish measured quietness; no quiet-room claim is imported."
+        }
+      }
+    },
+    {
+      "slug": "bpl-south-boston",
+      "name": "Boston Public Library — South Boston Branch",
+      "address": "646 East Broadway, South Boston, MA 02127",
+      "category": "library",
+      "latitude": null,
+      "longitude": null,
+      "time_zone": "America/New_York",
+      "public_access": "public",
+      "source_url": "https://www.bpl.org/locations/south-boston/",
+      "source_evidence": "Official branch page provides the public-library identity, street address and visiting information. Scheduled events may affect conditions. No sensory observations or opening-hours promises are imported.",
+      "checked_at": "2026-10-20T18:03:00Z",
+      "provenance_status": "verified",
+      "published": true,
+      "is_fixture": false,
+      "features": {
+        "accessible_entrance": {
+          "verification": "verified", "value": true,
+          "source_url": "https://www.bpl.org/locations/south-boston/",
+          "checked_at": "2026-10-20T18:03:00Z",
+          "evidence": "Official Facilities section lists accessible entrances. Specific step-free routes, seating suitability and toilet accessibility remain unknown."
+        }
+      }
+    }
+  ]
+}

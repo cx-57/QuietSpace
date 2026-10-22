@@ -1,0 +1,40 @@
+name: Checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: python -m unittest discover -s tests -p "test_*.py" -v
+      - run: python tools/import_venues.py --as-of 2026-10-20T23:59:59Z --output artifacts/venues.sql
+      - run: git diff --check
+  application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      # Bootstrap exception: a lockfile cannot be generated without npm.
+      # After the first successful run, review and commit its artifact.
+      - name: Install (locked when available)
+        shell: bash
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            echo '::warning::Bootstrap install: review and commit the generated lockfile.'
+            npm install
+          fi
+      - run: npm run check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bootstrap-package-lock
+          path: package-lock.json
+          if-no-files-found: ignore
