@@ -4,9 +4,9 @@ The accompanying `artifacts/quietspace-demo.webm` is actual browser footage, rou
 
 **Opening, 0:00–0:15.** “Finding a suitable public place can take more research than the visit itself. I saw friends spend time looking for places that suited their attention and sensory needs, only to arrive somewhere distracting. QuietSpace helps make that choice more informed.”
 
-**Quiet first-use, 0:15–0:35.** “Choose Find a Quiet Study Space to prioritize two Boston library locations with officially documented study areas. Bates Hall at Central Library and East Boston's quiet/study rooms are source-supported options—not decibel readings or real-time claims. You can also adjust noise, crowd, brightness and scent preferences, which stay on this device.”
+**Environment first-use, 0:15–0:35.** “Choose from six environments, such as Focus and Study, Low Stimulation, Softer Lighting or Social and Energetic. Combine them with libraries, parks or a museum, and require officially verified facilities. These are preferences—not claims that we know how loud or crowded every place is.”
 
-**Directory, 0:35–0:50.** “We start with five real Boston library locations. Each has official sources and review dates. No community noise data is invented, and numeric scores stay unknown until enough approved reports exist.”
+**Directory, 0:35–0:50.** “We start with eleven real Boston places across three categories. Each has official sources and review dates. No community noise data is invented, and numeric scores stay unknown until enough approved reports exist.”
 
 **Strict filters, 0:50–1:00.** “If step-free access is required, unknown does not pass. A source-confirmed entrance does not prove the rest of the building is step-free. It is better to show no result than make an unsupported promise.”
 
