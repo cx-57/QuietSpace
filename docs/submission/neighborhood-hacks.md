@@ -24,7 +24,7 @@ QuietSpace starts with this experience: people need different surroundings, and 
 
 ## What it does
 
-Visitors choose optional noise, crowd, brightness and scent preferences in their browser. A one-click quiet-study shortcut highlights officially documented study spaces **even with zero sensory observations**—without claiming the buildings are currently quiet or inventing numeric scores. They browse five real, source-reviewed Boston Public Library locations, search by name or area, and require verified facilities. Each venue shows source dates, facility evidence, unknowns and any approved sensory observations.
+Visitors choose optional noise, crowd, brightness and scent preferences in their browser. An environment chooser offers six starting points (focus, low stimulation, uncrowded, softer light, low scent and social comfort) plus type filters for libraries, parks and museums; a quiet-study shortcut highlights officially documented study spaces **even with zero sensory observations**—without claiming the buildings are currently quiet or inventing numeric scores. They browse eleven real, source-reviewed Boston places (eight libraries, two parks/gardens and a ticketed museum), search by name or area, and require verified facilities. Each venue shows source dates, facility evidence, unknowns and any approved sensory observations.
 
 Compatibility scores appear only when there is enough recent evidence. A high fit is separate from evidence strength and never promises live conditions. Historical patterns use the venue's local time and remain unknown when there are fewer than three observations in a period.
 

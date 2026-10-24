@@ -11,6 +11,8 @@ export function SpaceCard({ space, match, now, index = 1, seekingQuiet = false }
   const entrance = effectiveFacility(space.features.accessible_entrance, now);
   const quietStudy = effectiveFacility(space.features.quiet_room, now);
   const sourceListedQuiet = quietStudy.verification === "verified" && quietStudy.value === true;
+  const seating = effectiveFacility(space.features.seating, now);
+  const verifiedSeating = seating.verification === "verified" && seating.value === true;
   return <article className="space-card">
     <span className="place-index" aria-hidden="true">{String(index).padStart(2, "0")}</span>
     <div className="place-body"><div className="place-kicker"><span>Public {space.category.replaceAll("_", " ")}</span><span className="kicker-line" /><span>{space.address.split(",")[1]?.trim() ?? "Boston"}</span></div>
@@ -21,7 +23,8 @@ export function SpaceCard({ space, match, now, index = 1, seekingQuiet = false }
         return <span key={d}><Icon name={d === "noise" ? "sound" : d === "crowds" ? "people" : d === "brightness" ? "sun" : "scent"} size={16} /><span>{d === "crowds" ? "Crowds" : d[0].toUpperCase() + d.slice(1)} <strong>{values.length >= 3 ? `${median(values)}/5` : "—"}</strong><span className="sr-only">{values.length < 3 ? ": not enough observations" : ": median intensity"}</span></span></span>;
       })}</div>
       <div className="place-meta"><span className="facility-note"><Icon name={entrance.value === true ? "check" : "book"} size={15} />{entrance.value === true ? "Accessible entrance · source verified" : "Entrance access not verified"}</span>
-      {sourceListedQuiet && <a className="facility-note" href={quietStudy.sourceUrl}><Icon name="book" size={15} />Quiet/study space · BPL source</a>}
+      {sourceListedQuiet && <a className="facility-note" href={quietStudy.sourceUrl}><Icon name="book" size={15} />Listed quiet/study area · Official source</a>}
+      {verifiedSeating && <a className="facility-note" href={seating.sourceUrl}><Icon name="check" size={15} />Seating listed · Official source</a>}
       <ConfidenceLabel evidence={evidenceSummary(space.reports, space.id, now, space.timeZone)} /></div>
       <p className="source-line"><a href={space.source.sourceUrl}>Official venue source</a><span>Reviewed <SourceDate value={space.source.checkedAt} /></span></p>
     </div>

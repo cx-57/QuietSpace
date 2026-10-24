@@ -26,12 +26,17 @@ class ImportTests(unittest.TestCase):
     def validate(self):
         return validate_document(self.document, AS_OF)
 
-    def test_real_curated_batch_has_five_venues_no_sensory_observations(self):
+    def test_real_curated_batch_has_multiple_venue_types_no_sensory_observations(self):
         venues = self.validate()
-        self.assertEqual(len(venues), 5)
+        self.assertEqual(len(venues), 11)
         self.assertTrue(all(venue["public_access"] == "public" and not venue["is_fixture"] for venue in venues))
         self.assertTrue(all(venue["latitude"] is None and venue["longitude"] is None for venue in venues))
-        self.assertTrue(all(venue["features"]["accessible_entrance"]["value"] is True for venue in venues))
+        self.assertEqual({v["category"] for v in venues}, {"library", "park", "museum"})
+        self.assertEqual(sum(v["features"]["quiet_room"]["value"] is True for v in venues), 5)
+        self.assertTrue(all(v["features"]["accessible_entrance"]["value"] is True
+                            for v in venues if v["slug"] in {"bpl-central", "bpl-east-boston", "mfa-boston"}))
+        self.assertTrue(all(v["features"]["seating"]["value"] is True
+                            for v in venues if v["category"] == "park"))
         self.assertTrue(all(venue["features"]["step_free_access"] == UNKNOWN for venue in venues))
 
     def test_unknown_and_verified_false_are_distinct(self):
@@ -109,7 +114,7 @@ class ImportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValidationError, "stale"):
             self.validate()
         self.document["venues"][0].update(published=False, provenance_status="needs_review")
-        self.assertEqual(len(self.validate()), 5)
+        self.assertEqual(len(self.validate()), 11)
 
     def test_unverified_published_source_rejected(self):
         self.document["venues"][0]["provenance_status"] = "unverified"
@@ -193,7 +198,7 @@ class ImportTests(unittest.TestCase):
         completed = subprocess.run([sys.executable, str(ROOT / "tools/import_venues.py"), "--as-of", AS_OF.isoformat()],
                                    cwd=ROOT, capture_output=True, text=True, check=False)
         self.assertEqual(completed.returncode, 0, completed.stderr)
-        self.assertIn("5 real venue records", completed.stdout)
+        self.assertIn("11 real venue records", completed.stdout)
         self.assertIn("no database writes", completed.stdout)
 
     def test_cli_fails_safely_and_does_not_print_malformed_data(self):

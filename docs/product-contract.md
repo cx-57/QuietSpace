@@ -13,13 +13,13 @@ Version 3 — 2026-10-23 (release candidate). Requirements: the repository's sta
 | `/spaces/[id]` | Venue, sources, facility verification, approved evidence, explanation | Public space/features/approved reports → detail | Sourced detail, unknown facilities, shared matching and evidence |
 | `/spaces/[id]/report` | Structured anonymous intensity observation, pending confirmation | Server-only write boundary → report RPC | Working direct-PostgreSQL flow; public deployment still gated |
 
-The default curated mode is a read-only directory of the five actual source-reviewed records, with no reports or fake scores. Its stable URLs use source slugs; it does not invent database UUIDs. Explicit postgres or supabase mode uses validated anonymous-role public reads and bounded queries; connection failures never silently fall back to curated records. A privileged key is used only for the report RPC. Report submission requires explicit enabling. Local loopback development uses a shared bucket; production requires verified trusted ingress. Real local database acceptance has passed. No public moderation UI exists.
+The default curated mode is a read-only directory of 11 actual source-reviewed Boston records across libraries, parks and a museum, with no reports or fake scores. Its stable URLs use source slugs; it does not invent database UUIDs. Explicit postgres or supabase mode uses validated anonymous-role public reads and bounded queries; connection failures never silently fall back to curated records. A privileged key is used only for the report RPC. Report submission requires explicit enabling. Local loopback development uses a shared bucket; production requires verified trusted ingress. Real local database acceptance has passed. No public moderation UI exists.
 
 ## P0 journey and non-goals
 
-Choose preferences → browse sourced venues → inspect evidence and unknowns → optionally report → moderator approves → later evidence refresh includes that report. Choosing no preferences must still allow browsing. No device location is required.
+Choose an optional sensory profile, venue type and verified facilities → browse sourced venues → inspect evidence and unknowns → optionally report → moderator approves → later evidence refresh includes that report. Choosing no preferences must still allow browsing. No device location is required.
 
-P0 includes filters, 5–10 real public venues, details, explainable matching, anonymous moderated reports, accessible navigation and honest no-data states. P1: venue-local historical patterns and optional map. Excluded: accounts, diagnoses, predictions, notifications, social features, automatic geolocation, live occupancy/noise claims, medical recommendations.
+P0 includes filters, 11 real public venues, details, explainable matching, anonymous moderated reports, accessible navigation and honest no-data states. P1: venue-local historical patterns and optional map. Excluded: accounts, diagnoses, predictions, notifications, social features, automatic geolocation, live occupancy/noise claims, medical recommendations.
 
 ## Cross-layer semantics
 
