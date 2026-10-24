@@ -43,7 +43,7 @@ export function DiscoveryChoices({ directory, category, visibleCount, onCategory
     <div className="choice-details">
       <fieldset className="category-choices"><legend>Explore by place type</legend>
         <div className="choice-pills">{categories.map(id => <button type="button" key={id} className="choice-pill"
-          disabled={!ready} aria-pressed={category === id} onClick={() => onCategoryChange(id)}>{CATEGORY_LABELS[id]} <span className="choice-count">{id === "all" ? directory.spaces.length : directory.spaces.filter(s => s.category === id).length}</span></button>)}</div>
+          disabled={!ready} aria-pressed={category === id} onClick={() => onCategoryChange(id)}>{CATEGORY_LABELS[id]} <span className="choice-count" aria-hidden="true">{id === "all" ? directory.spaces.length : directory.spaces.filter(s => s.category === id).length}</span></button>)}</div>
       </fieldset>
       <fieldset className="verified-choices"><legend>Require source-verified facilities</legend>
         <div className="verified-checks">
