@@ -7,6 +7,6 @@ export function HeroQuietAction() {
   const { preferences, update } = usePreferences();
   return <button className="button" type="button" onClick={() => {
     update({ ...preferences, maximumIntensities: { ...preferences.maximumIntensities, noise: 2 } });
-    document.getElementById("places")?.scrollIntoView({ behavior: "instant", block: "start" });
+    document.getElementById("places")?.scrollIntoView({ behavior: "auto", block: "start" });
   }}>Find a quiet study space <Icon name="arrow" /></button>;
 }
