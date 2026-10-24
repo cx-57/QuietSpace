@@ -15,7 +15,7 @@ export const DISCOVERY_PRESETS: readonly DiscoveryPreset[] = [
   { id: "uncrowded", title: "Space to yourself", detail: "Fewer crowds preferred", levels: { noise: null, crowds: 2, brightness: null, scent: null } },
   { id: "soft-light", title: "Softer lighting", detail: "Prefer dimmer surroundings", levels: { noise: null, crowds: null, brightness: 2, scent: null } },
   { id: "low-scent", title: "Low fragrance", detail: "Avoid strong scents", levels: { noise: null, crowds: null, brightness: null, scent: 1 } },
-  { id: "social", title: "Social & energetic", detail: "Comfortable with more activity", levels: { noise: 5, crowds: 5, brightness: 4, scent: null } },
+  { id: "social", title: "Comfortable with activity", detail: "Higher noise and crowds are okay", levels: { noise: 5, crowds: 5, brightness: 4, scent: null } },
 ];
 
 export function activePresetId(preferences: Preferences): DiscoveryPresetId | null {
