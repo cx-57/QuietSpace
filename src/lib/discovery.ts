@@ -7,10 +7,10 @@ export function hasVerifiedQuietStudySpace(space: PublicSpace, now: Date): boole
   return meetsRequiredFeatures(space.features, ["quiet_room"], now);
 }
 
-export function discover(spaces: PublicSpace[], preferences: Preferences, query: string, sort: "name" | "match", now: Date) {
+export function discover(spaces: PublicSpace[], preferences: Preferences, query: string, sort: "name" | "match", now: Date, category: "all" | PublicSpace["category"] = "all") {
   const seekingQuiet = preferences.maximumIntensities.noise !== null && preferences.maximumIntensities.noise <= 2;
   const terms = query.trim().toLocaleLowerCase("en-US").split(/\s+/).filter(Boolean);
-  return spaces.filter(s => terms.every(t => `${s.name} ${s.address}`.toLocaleLowerCase("en-US").includes(t)) &&
+  return spaces.filter(s => (category === "all" || s.category === category) && terms.every(t => `${s.name} ${s.address}`.toLocaleLowerCase("en-US").includes(t)) &&
       meetsRequiredFeatures(s.features, preferences.requiredFeatures, now))
     .map(space => ({ space, match: scoreSpace(space.reports, preferences, space.id, now) }))
     .sort((a, b) => (sort === "match"
