@@ -29,7 +29,7 @@ export default async function CommunityPage() {
     <section className="panel" aria-labelledby="community-flow-heading">
       <p className="eyebrow">THREE STEPS, ONE SHARED GUIDE</p><h2 id="community-flow-heading">How neighbors can help</h2>
       <div className="community-steps">
-        <div><span>01</span><h3>Visit a real place</h3><p>Use the official venue link to check availability and plan your visit. A quiet/study-room listing isn't a live noise reading.</p></div>
+        <div><span>01</span><h3>Visit a real place</h3><p>Use the official venue link to check availability and plan your visit. A listed quiet/study room does not establish current noise levels.</p></div>
         <div><span>02</span><h3>Share what you noticed</h3><p>Report any noise, crowd, brightness or scent intensity you actually observed during a visit. Leave unknowns blank.</p></div>
         <div><span>03</span><h3>Build trusted evidence</h3><p>A moderator checks submissions before they appear as anonymous community reviews or contribute to matching.</p></div>
       </div>
