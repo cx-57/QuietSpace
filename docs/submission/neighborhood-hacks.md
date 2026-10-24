@@ -18,9 +18,9 @@ Find a public place that feels right for your senses. QuietSpace brings together
 
 ## What is the specific problem, and how do you know it is real?
 
-I noticed friends struggling to find public places that suited their attention and sensory needs. There was no single place to compare the details that mattered to them, so choosing a library or another place to spend time required substantial research. Arriving somewhere distracting meant losing both that research time and the time spent going there.
+Public listings often describe a place's address and services without specifying whether its sensory environment meets a visitor's preferences. A person looking for quieter, less crowded, dimmer or low-fragrance surroundings may need to investigate several venues individually. QuietSpace organizes source-backed public venue facts separately from still-unknown sensory conditions.
 
-QuietSpace starts with this experience: people need different surroundings, and basic venue listings rarely organize information around those differences. Our initial Boston library directory is a concrete starting point. It is not evidence of a Boston user study, and we have not claimed interviews, clinical outcomes or measured community impact.
+**Creator action — replace with a genuine firsthand example before submitting:** Briefly describe a specific observation or real conversation that motivated this problem. Include only something you can personally substantiate; do not present an invented friend, interview, incident or community study as fact. The sourced Boston directory supports the product concept, but is not itself evidence of a Boston user study.
 
 ## What it does
 
@@ -50,7 +50,7 @@ Verify a public deployment, recruit consenting users for task-based usability ch
 
 ## AI and third-party disclosure
 
-The project concept, problem description and direction came from the creator. OpenAI Codex provided substantial assistance with implementation, UI design iteration, tests, documentation and browser-demo tooling. The submission should not imply the code was written without AI assistance. Open-source frameworks, fonts and the CC0 archival photograph are credited in the repository and in the app's Sources & credits page.
+The final submission should name and credit the actual collaborators, including the original repository contributors where relevant. OpenAI AI tools have provided substantial assistance with implementation, UI design iteration, tests, documentation and browser-demo tooling. Confirm any additional coding tools used. Do not imply that all code was written manually or that one person originated work done by collaborators. Open-source frameworks, fonts and the CC0 archival photograph are credited in the repository and in the app's Sources & credits page.
 
 ## Submission links to complete
 

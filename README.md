@@ -4,6 +4,10 @@ Find a place that feels right. A calm neighborhood guide to public places, with 
 
 The app includes discovery, strict access filters, local preference persistence, explainable matching, venue details, real PostgreSQL report submission, operator moderation, evidence reliability and historical periods. **Community** includes an evidence-based participation dashboard, structured approved sensory reviews (not fake testimonials), places awaiting observations, and public GitHub templates for proposing venues and providing usability feedback. With a low-noise preference (1–2/5), default suggested ordering prioritizes fresh, source-listed quiet/study spaces among unscored venues. This is a **facility signal, never a noise measurement or fit score**; numeric matches still require sufficient approved reports. The curated directory now covers **11 real Boston places: eight public libraries, two parks/gardens, and one museum**. Visitors can choose six sensory starting points, filter by place type, require source-verified facilities, and fine-tune noise, crowds, brightness and scent individually. Presets describe **user preferences**, not verified sensory attributes of venues. Their unknown sensory conditions remain unknown; no community observations were invented for these venues.
 
+## Quick start on macOS
+
+See **[Mac quickstart and final-run checklist](docs/quickstart-macos.md)** for curated read-only mode, Python 3, Chromium, optional local PostgreSQL, moderated report checks and the updated demo. You do not need a database to review the initial guide.
+
 ## Run the complete local app
 
 Node 24, npm, Python 3.11+, and PostgreSQL tools are required. On this machine PostgreSQL is installed under `C:/Program Files/PostgreSQL/18/bin`; set `PG_BIN` if yours is elsewhere.
@@ -20,7 +24,7 @@ With no configuration, the app instead offers the sourced Boston places as a cle
 
 ## Browse different environments
 
-The homepage now offers **Focus & study**, **Low stimulation**, **Space to yourself**, **Softer lighting**, **Low fragrance**, and **Social & energetic** as six optional starting points. The four individual intensity controls and strict verified-facility requirements remain available. Presets never erase facility requirements, and selecting a preset twice clears only its sensory levels. Venue-type controls cover the categories actually in the sourced directory. The museum may require admission; official links give visit requirements.
+The homepage now offers **Focus & study**, **Low stimulation**, **Space to yourself**, **Softer lighting**, **Low fragrance**, and **Comfortable with activity** as six optional starting points. The four individual intensity controls and strict verified-facility requirements remain available. Presets never erase facility requirements, and selecting a preset twice clears only its sensory levels. Venue-type controls cover the categories actually in the sourced directory. The museum may require admission; official links give visit requirements.
 
 These choices do **not** predict real noise, crowds, scents or brightness where community evidence is absent. Only a low-noise preference has an official facility-only fallback: verified quiet/study areas are prioritized among unscored locations. Other preferences result in explicitly unknown sensory ratings and category/facility browsing until legitimate moderated reports are available.
 
