@@ -57,6 +57,30 @@ test("quiet first-use and community hub show genuine participation without fake 
   await expect(page.getByRole("link", { name: "How community reviews work" })).toBeVisible();
 });
 
+test("multiple environment selections can be combined with place types and verified facilities", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /Softer lighting/ }).click();
+  await expect(page.getByRole("button", { name: /Softer lighting/ })).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Parks & gardens" }).click();
+  await expect(page.getByRole("article")).toHaveCount(2);
+  await expect(page.getByRole("article").getByText("Boston Public Garden")).toBeVisible();
+  await page.getByRole("button", { name: "Museums" }).click();
+  await expect(page.getByRole("article")).toHaveCount(1);
+  await expect(page.getByRole("article").getByText("Museum of Fine Arts, Boston")).toBeVisible();
+  await page.getByRole("button", { name: "All spaces" }).click();
+  await expect(page.getByRole("article")).toHaveCount(11);
+  await page.getByRole("button", { name: "Accessible entrance" }).click();
+  await expect(page.getByRole("article")).toHaveCount(8);
+  await page.getByRole("button", { name: /Low fragrance/ }).click();
+  await expect(page.getByRole("button", { name: /Low fragrance/ })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Accessible entrance" })).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Listed quiet/study area" }).click();
+  await expect(page.getByRole("article")).toHaveCount(4);
+  await expect(page.getByText(/sensory conditions remain unknown/).first()).toBeVisible();
+  await page.getByRole("button", { name: "Listed quiet/study area" }).click();
+  await expect(page.getByRole("article")).toHaveCount(8);
+});
+
 test("malformed saved preferences recover, and disabled storage keeps session preferences", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("quietspace.preferences.v1", "broken"));
   await page.goto("/preferences");
