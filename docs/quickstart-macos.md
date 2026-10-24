@@ -87,6 +87,8 @@ PLAYWRIGHT_CHANNEL=chromium npm run demo:record
 
 After building and preparing `quietspace_browser_test`, this records a captioned WebM in ignored `artifacts/quietspace-demo.webm` with the new six-option discovery, place types, source provenance and **explicitly synthetic** test submissions/approvals. Review the footage before publishing—its creation is not a claim of real user participation.
 
+**Time-limited fallback:** If PostgreSQL or automated recording is unavailable, start the read-only curated app from section 2, press **Shift–Command–5** on macOS, choose screen recording, and make a **2–6-minute real screen capture**. Show the six presets, place-type filters, source-backed facilities, one venue detail, and the honest `/community` zero state. State explicitly that real community reporting is not yet enabled. This is preferable to fabricating reviews or missing the submission deadline while debugging a demo tool.
+
 ## 5. Outstanding publishing steps
 
 - GitHub Actions currently fails before runners start. These commands are the replacement executable verification until CI access is repaired; do **not** claim a green CI run until it exists.
