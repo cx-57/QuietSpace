@@ -4,7 +4,7 @@ Updated October 23, 2026. This is a previously locally tested application and a 
 
 ## Verified locally
 
-- Five source-reviewed Boston Public Library records are imported into PostgreSQL with 25 explicit facility states and zero fabricated sensory reports. The list and details use real anonymous-role database reads.
+- The earlier local database acceptance used the original five Boston libraries and zero fabricated sensory reports. The expanded 11-location curated inventory and associated tests still require a fresh executable verification; existing connected databases require a rerun of the reviewed venue import. The list and details use real anonymous-role database reads.
 - Preferences persist locally, recover from malformed/blocked storage, and enforce fresh verified-true required facilities.
 - Scoring and historical bins share approved, recent, non-fixture observations. Thresholds, missing values, venue-local dates, DST, sparse evidence and reliability are tested.
 - Real browser submission persists pending; operator CLI approval changes public evidence; rejection removes it. Anonymous writes/moderation are denied. Concurrent submissions share a transactional limiter.
@@ -48,6 +48,14 @@ Compose publishes only the application on loopback; the database has no public p
 Choose either direct PostgreSQL (`QUIETSPACE_DATA_MODE=postgres`) or the existing Supabase REST adapter. Direct PostgreSQL requires a non-superuser NOINHERIT login with SET membership in `anon` and `service_role`, all three migrations, verified TLS/database networking and a protected operator account. Public reads run `SET LOCAL ROLE anon` inside read-only transactions; writes use only the pending RPC as `service_role`. The long-running PostgreSQL application purges expired abuse records on startup and hourly. Serverless/Supabase deployments need an external scheduler, as described in [reporting](engineering/reporting.md).
 
 Keep public reporting disabled until the deployed canonical HTTPS Origin, overwritten trusted IP header, direct-origin access restrictions, backups and cleanup monitoring are verified. The [nginx example](../deploy/nginx.conf) shows body limits and an overwritten IP header; adapt it inside a TLS-enabled virtual host for the actual domain. Its loopback HTTP server is an example, not a complete TLS deployment. Hosting credentials/domain were not available here, so no cloud service was modified.
+
+## Multi-environment discovery acceptance
+
+1. Verify six sensory profiles are selectable and can be cleared, and that changing the profile preserves required access facilities.
+2. Check libraries (8), parks/gardens (2), museums (1), and all places (11) in curated mode.
+3. Test the four individual sensory controls separately: crowd, lighting and scent preferences must **not** produce fabricated fit scores without approved reports.
+4. Check quiet-study area selection (5 verified facility listings) and verified accessible entrance requirements (8 verified entries). The park pages should show verified seating rather than claim indoor quiet.
+5. Check museum ticket requirements are clearly sourced, and confirm source dates/expiry behavior before promoting to production.
 
 ## QuietSpace / Community launch-specific acceptance
 
