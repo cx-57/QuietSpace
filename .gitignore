@@ -2,6 +2,7 @@ node_modules/
 .npm-cache/
 .next/
 .next-connected-test/
+.next-postgres-test/
 out/
 coverage/
 *.tsbuildinfo

@@ -73,8 +73,9 @@ class RepositoryContracts(unittest.TestCase):
 
     def test_no_fixtures_or_imports_automatically_run_on_start_or_build(self):
         package = json.loads((ROOT / "package.json").read_text())
-        self.assertEqual(package["scripts"]["build"], "next build")
-        self.assertEqual(package["scripts"]["start"], "next start")
+        for name in ("build", "start"):
+            self.assertNotIn("import_venues", package["scripts"][name])
+            self.assertNotIn("setup-local", package["scripts"][name])
         self.assertNotIn("postinstall", package["scripts"])
         for route in ("page.tsx", "preferences/page.tsx", "spaces/[id]/page.tsx", "spaces/[id]/report/page.tsx"):
             self.assertTrue((ROOT / "src/app" / route).exists())

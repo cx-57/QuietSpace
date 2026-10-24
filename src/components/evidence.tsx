@@ -4,8 +4,9 @@ import { DIMENSION_LABELS } from "../lib/preferences";
 import { eligibleReports, median } from "../lib/sensory-score";
 
 export function ConfidenceLabel({ evidence }: { evidence: Reliability }) {
+  const label = evidence.label === "supported_observations" ? "More supported evidence" : evidence.label === "limited_observations" ? "Limited evidence" : "Early observations";
   return <div className="evidence-label"><span className="status-dot" aria-hidden="true" />
-    {evidence.approvedRecentCount === 0 ? "No recent community observations" : `${evidence.approvedRecentCount} approved observation${evidence.approvedRecentCount === 1 ? "" : "s"} in the last 60 days`}
+    {evidence.approvedRecentCount === 0 ? <span>No recent community observations</span> : <span><strong>{label}</strong><span className="evidence-count">{evidence.approvedRecentCount} approved observation{evidence.approvedRecentCount === 1 ? "" : "s"} in the last 60 days</span></span>}
   </div>;
 }
 export function MatchExplanation({ match, expanded = false }: { match: MatchResult; expanded?: boolean }) {

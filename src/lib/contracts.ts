@@ -46,7 +46,7 @@ export interface PublicSpace extends SpaceSummary {
   reports: ApprovedReport[];
 }
 export interface Directory {
-  mode: "curated" | "supabase";
+  mode: "curated" | "supabase" | "postgres";
   spaces: PublicSpace[];
   asOf: string;
 }
@@ -82,7 +82,7 @@ export type MatchResult =
     };
 
 export interface Reliability {
-  label: "no_observations" | "limited_observations" | "recent_observations";
+  label: "no_observations" | "insufficient_observations" | "limited_observations" | "supported_observations";
   approvedRecentCount: number;
   countsByDimension: Record<Dimension, number>;
   distinctObservationDates: number;

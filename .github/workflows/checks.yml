@@ -15,12 +15,33 @@ jobs:
       - run: git diff --check
   application:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: quietspace_owner
+          POSTGRES_PASSWORD: SAMPLE-ci-only-password
+          POSTGRES_DB: postgres
+        ports:
+          - 55432:5432
+        options: >-
+          --health-cmd "pg_isready -U quietspace_owner"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PGPASSWORD: SAMPLE-ci-only-password
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
       - run: npm ci
+      - run: npm run test:database
+      - run: node tools/prepare-browser-db.mjs
       - run: npm run check
         env:
           NEXT_TELEMETRY_DISABLED: '1'
@@ -28,6 +49,8 @@ jobs:
       - run: npm run test:e2e
         env:
           PLAYWRIGHT_CHANNEL: chromium
+          QUIETSPACE_REAL_DATABASE_TESTS: '1'
+      - run: npm run check:release
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

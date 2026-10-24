@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
 import { PreferencesProvider } from "../components/preferences-provider";
+import { BrandMark } from "../components/icon";
+import { Navigation } from "../components/navigation";
 
 export const metadata: Metadata = {
   title: { default: "QuietSpace", template: "%s | QuietSpace" },
@@ -14,11 +16,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <a className="skip-link" href="#main">Skip to content</a>
         <header className="site-header">
-          <Link href="/" className="brand"><span className="brand-mark" aria-hidden="true">q</span>QuietSpace</Link>
-          <nav aria-label="Main"><Link href="/">Explore places</Link><Link href="/preferences">Your preferences</Link></nav>
+          <Link href="/" className="brand"><span className="brand-mark"><BrandMark /></span>quietspace<span className="brand-period">.</span></Link>
+          <Navigation />
         </header>
         <PreferencesProvider><main id="main" tabIndex={-1}>{children}</main></PreferencesProvider>
-        <footer><span className="brand">QuietSpace</span><p>Personal preferences. Public places. Room to be yourself.</p><p className="small">Conditions can change. Observations describe past visits, never live conditions.</p></footer>
+        <footer className="site-footer"><div className="footer-top"><div><Link href="/" className="brand">quietspace<span className="brand-period">.</span></Link><p>A little more room to be yourself.</p></div><div className="footer-links"><Link href="/about">How it works</Link><Link href="/privacy">Privacy</Link><Link href="/credits">Sources & credits</Link></div></div><div className="footer-bottom"><p>Made for real neighborhoods. Starting in Boston.</p><p>Past observations. Changing conditions. Your choice.</p></div></footer>
       </body>
     </html>
   );

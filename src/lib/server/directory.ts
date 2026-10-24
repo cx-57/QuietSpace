@@ -3,6 +3,7 @@ import venueData from "../../../data/venues/boston-libraries.json";
 import { FEATURE_KEYS } from "../contracts.ts";
 import type { Directory, Result } from "../contracts.ts";
 import { adaptFacility, adaptReport, adaptSpace, object, SLUG_PATTERN, UUID_PATTERN } from "../public-data.ts";
+import { loadPostgresDirectory } from "./postgres.ts";
 
 export function publicConfig(): { url: string; key: string } | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -41,6 +42,10 @@ export async function loadDirectory(now = new Date(), identifier?: string): Prom
         return [space];
       });
       return { ok: true, value: { mode, spaces, asOf: now.toISOString() } };
+    }
+    if (mode === "postgres") {
+      if (!process.env.DATABASE_URL) return { ok: false, error: { code: "setup_required", message: "The directory connection has not been configured." } };
+      return { ok: true, value: await loadPostgresDirectory(now, identifier) };
     }
     if (mode !== "supabase") throw new Error("Invalid data mode");
     const config = publicConfig();

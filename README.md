@@ -1,57 +1,69 @@
 # QuietSpace
 
-Find a place that feels right. A calm, list-first directory of public venues, with local sensory preferences and transparent evidence.
+Find a place that feels right. A calm neighborhood guide to public places, with private sensory preferences, source-reviewed facilities and moderated observations.
 
-**Implemented through Stage 10:** accessible shell, versioned local preferences, deterministic matching, search and strict facility filters, venue detail/source pages, and a guarded pending-report flow with operator moderation tooling. Default mode is a **read-only sourced directory of five real Boston public-library venues**, with no invented sensory reports. Reporting is disabled until a real test database, trusted ingress, moderation and cleanup checks pass. This is not a released MVP.
+The app includes discovery, strict access filters, local preference persistence, explainable matching, venue details, real PostgreSQL report submission, operator moderation, evidence reliability and historical periods. The directory starts with **five real Boston Public Library locations**. Their unknown sensory conditions remain unknown; no community observations were invented for these venues.
 
-## Open locally
+## Run the complete local app
 
-Node 24 LTS and npm:
+Node 24, npm, Python 3.11+, and PostgreSQL tools are required. On this machine PostgreSQL is installed under `C:/Program Files/PostgreSQL/18/bin`; set `PG_BIN` if yours is elsewhere.
 
 ```powershell
 npm ci
-npm run dev
+npm run setup:local
+npm run dev -- --hostname 127.0.0.1 --port 3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000). No credentials or env file are needed for the curated directory. Change preferences, type a place/area, require verified facilities, and open venue details. Unknown facilities do not pass a strict filter. No observations means no numeric match. Source facts expire after 90 days; do not change review timestamps without checking the official source.
+Open **[http://localhost:3000](http://localhost:3000)**. Setup creates a dedicated loopback PostgreSQL cluster on port 55432, applies migrations, imports five sourced venues and writes an ignored `.env.local` with restricted application credentials. It preserves an existing custom env file. The development cluster uses loopback trust authentication; never expose or deploy it.
 
-Routes: `/`, `/preferences`, `/spaces/bpl-brighton`, `/spaces/bpl-brighton/report`. All five directory slugs work for detail/report navigation; missing or unpublished venues return 404. Curated report pages clearly state that no observation is collected.
+With no configuration, the app instead offers the same five sourced venues as a clearly labeled **read-only curated guide**. Choose `QUIETSPACE_DATA_MODE=postgres` for direct role-constrained transactions or `supabase` for the existing REST adapter. A connected-service failure never silently substitutes local data.
 
-## Checks
+## Moderate observations
+
+```powershell
+npm run moderate -- pending
+npm run moderate -- approve REPORT_UUID
+npm run moderate -- reject REPORT_UUID
+npm run moderate -- purge
+```
+
+Only a trusted operator uses these commands. `LOCAL_OPERATOR_DATABASE_URL` is separate from the application login. Every submission starts pending; only approval makes it public. Anonymous clients cannot write rows or approve reports. The PostgreSQL app purges expired abuse tokens on startup and hourly; Supabase/serverless deployments require an external schedule.
+
+## Check the app
 
 ```powershell
 npm run check
 python -m unittest discover -s tests -p "test_*.py" -v
-python tools/import_venues.py
+npm run test:database
+node tools/prepare-browser-db.mjs
+$env:QUIETSPACE_REAL_DATABASE_TESTS = '1'
 npm run test:e2e
-git diff --check
+npm run check:release
 ```
 
-`check` runs lint, TypeScript, 28 Node logic/boundary tests and a production build. The Python suite has 26 importer/cross-layer checks. Seven Playwright journeys cover curated production mode and an isolated development server connected to a **loopback test double**, including report validation/pending state, simulated approval, error recovery, storage recovery, keyboard interaction, 320px layouts and axe scans. They do not validate PostgreSQL or RLS.
+`check` runs ESLint, TypeScript, 32 Node tests and the packaged production build. Python supplies 26 importer/cross-layer checks. Database tests create and remove an isolated verification database, exercising migrations, RLS, pending/approval/rejection, persistent limits, cleanup and import replay. Browser tests cover curated production mode, a controlled REST test double, and actual PostgreSQL, including concurrent submissions. Synthetic records are confined to separate test databases and ports.
 
-Browser tests require a production build first and default to installed Microsoft Edge. For Chromium instead:
+Browser tests default to installed Edge. For Chromium, run `npx playwright install chromium` and set `PLAYWRIGHT_CHANNEL=chromium`. They manage ports 3100–3102 and 3987. Screenshots are under ignored `artifacts/release-desktop.png` and `artifacts/release-mobile.png`. Automated checks do not replace a screen-reader or user study. CI is configured for PostgreSQL and Chromium; no remote CI execution is claimed.
+
+## Demo and release
 
 ```powershell
-npx playwright install chromium
-$env:PLAYWRIGHT_CHANNEL = 'chromium'
-npm run test:e2e
+npx playwright install ffmpeg
+npm run demo:record
 ```
 
-Browser tests manage ports 3100, 3101 and 3987 and stop those processes afterward. The connected test build directory is isolated from the normal development server. Next generates type declarations/include entries during builds and may rewrite `next-env.d.ts`. Screenshots are written to ignored `artifacts/stage-10-desktop.png` and `artifacts/stage-10-mobile.png`. No automated scan substitutes for a screen-reader or user study.
+This produces `artifacts/quietspace-demo.webm`: a silent, captioned 2–3 minute browser recording. Report scenes explicitly use synthetic data in a separate database. It also records a local production-build performance sample in `artifacts/performance.json`. No video has been uploaded or submitted.
 
-## Connect reporting
+`npm run build` creates a self-contained `.next/standalone` app with its local images/fonts. `npm start` serves that package and accepts `--port`. The [Dockerfile](Dockerfile), [Compose stack](compose.yaml) and [release checklist](docs/release-checklist.md) prepare a Linux deployment; containers and a public host have not been run from this session. Production reporting requires HTTPS, a verified overwritten ingress IP header, restricted database credentials and monitored cleanup.
 
-Copy `.env.example` to ignored `.env.local` and follow [reporting setup and moderation](docs/engineering/reporting.md) and [database verification](docs/engineering/database.md). Select `QUIETSPACE_DATA_MODE=supabase` for anonymous-role public reads. A failed/missing connection has an honest error state and never silently swaps to local data. No service-role key is used for public discovery.
+## Design and evidence
 
-The server report handler accepts exact structured inputs, validates time/rating/body limits, checks Origin and a verified ingress header, then calls the persistent rate-limited pending-only RPC. A trusted operator approves or rejects individual reports through secured database tooling; no public approval endpoint exists. Public adapters and scoring exclude unapproved, fixture, stale and future observations. API success means **pending**, not published.
+- [Implementation and final evidence](docs/engineering/phase-signoffs/11-18.md)
+- [Design direction and research](docs/engineering/design-direction.md)
+- [Neighborhood Hacks submission draft](docs/submission/neighborhood-hacks.md) and [demo narration](docs/submission/demo-script.md)
+- [Product contract](docs/product-contract.md), [database notes](docs/engineering/database.md), [reporting setup](docs/engineering/reporting.md)
+- [Venue sourcing](data/venues/README.md) and [third-party notices](THIRD_PARTY_NOTICES.md)
 
-**Still unverified:** real PostgreSQL migration/RLS, concurrent persistent limits, real submission/approval/rejection, deployed ingress spoofing resistance and cleanup scheduling. No hosted service was contacted or changed. Keep `REPORTS_ENABLED=false` until those gates pass. No deployment or contest submission has been performed.
+The redesign uses a custom arch identity, self-hosted typography, indexed venue rows, quiet colors and an attributed public-domain archival photograph. The optional embedded map is deliberately deferred because all venue coordinates remain unverified. List navigation is complete without it.
 
-## Evidence and design decisions
-
-- [Stage 05-10 evidence and sign-offs](docs/engineering/phase-signoffs/05-10.md)
-- [Product contract](docs/product-contract.md) and [current architecture](docs/engineering/adr-002-core-journey.md)
-- [Venue sources and attribution](data/venues/README.md); optional offline SQL generation: `python tools/import_venues.py --output artifacts/venues.sql` (never executes SQL)
-- [Original staged prompt](prompt/QuietSpace_Copyable_Meta_Prompt_and_Codex_Stages.md); execution stops after Stage 10
-
-Dependency audit on 2026-10-22: production dependencies report **0 vulnerabilities**; the inherited ESLint dependency chain reports **5 high findings** from one unpatched `braces` advisory. No forced Next lint-config downgrade was applied. Details and the upstream advisory are recorded in the stage evidence. The lockfile is genuine and CI uses `npm ci`; CI changes have not been run remotely.
+Production dependency audit: **0 reported vulnerabilities** on October 23, 2026. The inherited development-only ESLint/braces advisory remains documented in the sign-off; no forced framework downgrade was applied. The lockfile is genuine. No deployment, repository push, Devpost submission, fabricated user research or current-conditions guarantee is claimed.

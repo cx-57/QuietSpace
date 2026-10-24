@@ -1,13 +1,13 @@
 # Reporting and moderation, Stage 10
 
-Prepared 2026-10-22. Application boundary tests run against controlled sinks and a loopback PostgREST test double. **No PostgreSQL migration, policy, persistent limit, or real moderation transaction has executed in this session. Reporting remains disabled by default.**
+Updated 2026-10-23: the local PostgreSQL reporting path is enabled and verified against actual role-constrained reads, pending storage, operator CLI approval, rejection, concurrency limits and cleanup. Curated mode stays read-only. Hosted Supabase, deployed ingress and public hosting have not been verified. The original REST path remains available; latest evidence is in phase-signoffs/11-18.md.
 
 ## Connect a test environment
 
-1. Use a disposable PostgreSQL 15+/Supabase project and follow [database setup](database.md). Apply `202610200001_foundation.sql`, then `202610220001_report_abuse_controls.sql`. Run `foundation.sql` and `reports.sql` as the trusted owner. The foundation test still exercises the earlier narrow RPC; the application now uses the rate-limited wrapper. Both capabilities remain server-only.
+1. Use a disposable PostgreSQL 15+/Supabase project and follow [database setup](database.md). Apply all three files in `supabase/migrations/` in filename order. Run `foundation.sql`, `reports.sql` and `cleanup.sql` as the trusted owner. The foundation test still exercises the earlier narrow RPC; the application now uses the rate-limited wrapper. Both capabilities remain server-only.
 2. Import the five real source-reviewed venues with the offline importer. Do not import SAMPLE test fixtures into a hosted directory. Source and facility facts expire after 90 days.
 3. In a local ignored `.env.local`, choose `QUIETSPACE_DATA_MODE=supabase`, set the public project URL and anonymous key. **Public reads always use the anonymous key**, never the service role. The current adapter expects Supabase's legacy anonymous/service-role JWT pair for its API `Authorization` header; do not substitute a user's access token or a secret/publishable key pair without updating the auth adapter.
-4. Only after the tests below pass, set the server-only service-role key, a random `REPORT_ABUSE_SECRET` of at least 32 characters, the exact `APP_ORIGIN`, a verified `REPORT_TRUSTED_IP_HEADER`, and `REPORTS_ENABLED=true`. Restart the server. Production requires HTTPS for the canonical app origin and data service. Local HTTP loopback is supported only in development. No key needs to be pasted into chat.
+4. Only after the tests below pass, set the server-only service-role key, a random `REPORT_ABUSE_SECRET` of at least 32 characters, the exact `APP_ORIGIN`, a verified `REPORT_TRUSTED_IP_HEADER`, and `REPORTS_ENABLED=true`. Restart the server. Production requires HTTPS for the canonical app origin and data service. Local HTTP loopback is supported only in development. No key needs to be pasted into chat. For the complete direct-PostgreSQL local workflow, use `npm run setup:local` and the root README.
 5. The ingress must **overwrite** the selected single-IP header and prevent direct access to the origin. Check an external request supplying a forged header does not change the IP delivered to the app. Lists/unknown IPs cause 503 without writes. Do not guess a hosting provider's header. Until verified, keep reporting off. Apply upstream request/body limits as well; application limits are not a full DDoS defense.
 6. Schedule `select public.purge_report_abuse_events();` **hourly**, as a trusted operator via the database's scheduler. Supabase projects with pg_cron already enabled can schedule `select cron.schedule('quietspace-abuse-purge', '0 * * * *', 'select public.purge_report_abuse_events();');`. Check for an existing job before creating one. No scheduler/extension is installed by this repo. If pg_cron is absent, use your secured operator scheduler. Verify job success and deletion of expired test events before enabling reports.
 
@@ -39,7 +39,7 @@ Review for valid venue, plausible observation time/intensity and duplicates. Do 
 
 Reload discovery/detail after moderation. Public reads use no-store, and the adapter excludes pending/rejected/fixture rows even if returned by a faulty backend. At least 3 approved observations per eligible dimension and 2 dimensions including noise are still required before any fit number appears. Rejection must remove the row on the next fetch.
 
-## Required real-service acceptance (not yet executed)
+## Required deployed acceptance (local database checks now executed)
 
 - Fresh migrated disposable database: both SQL suites pass, including public denial of RPC/table writes and the application's denial of direct moderation.
 - Valid HTTP observation inserts exactly one pending row. Public anonymous query returns no receipt row. A second rapid or duplicate request is 429; verify concurrent requests across two app workers also share limits.
@@ -48,3 +48,9 @@ Reload discovery/detail after moderation. Public reads use no-store, and the ada
 - Ingress spoofing test passes; service-role key is absent from client assets; cleanup runs hourly; protected monitoring does not record raw submission bodies/IPs.
 
 References consulted: [Next route handlers](https://nextjs.org/docs/app/api-reference/file-conventions/route), installed Next 16.4.2 guides under `node_modules/next/dist/docs/`, and the existing migration/contract. The database tests, not the test double, are the approval-publication acceptance gate.
+
+## Direct PostgreSQL runtime
+
+Mode `postgres` uses the same schema and RPC with a non-superuser NOINHERIT app login. Public reads use read-only transactions with SET LOCAL ROLE anon. Submission uses SET LOCAL ROLE service_role. A narrow third migration permits only time-bounded abuse cleanup; the long-running app runs it at startup and hourly. Client roles still cannot read abuse rows or call cleanup. Serverless hosts must retain the external scheduler described above.
+
+Local development with a loopback canonical origin uses one server-supplied shared bucket; it never trusts a browser IP header. This fallback is disabled in production. Production requires the exact HTTPS Origin and trusted overwritten ingress header. The operator account stays separate from the application login.

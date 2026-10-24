@@ -7,6 +7,7 @@ export interface ReportConfig { origin: string; secret: string; trustedIpHeader:
 export interface ReportDependencies {
   config: ReportConfig | null;
   now: () => Date;
+  networkAddress?: string;
   submit: (input: ReportInput, abuseKey: string, fingerprint: string) => Promise<Result<ReportReceipt>>;
 }
 function response(body: unknown, status: number, retryAfter?: string) {
@@ -23,7 +24,7 @@ export async function handleReport(request: Request, deps: ReportDependencies): 
   }
   if (request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !== "application/json") return error(415, "invalid_input", "Use a JSON observation.");
   // This header must be overwritten by the trusted ingress. Never trust a visitor-supplied forwarded chain.
-  const address = request.headers.get(config.trustedIpHeader)?.trim();
+  const address = deps.networkAddress ?? request.headers.get(config.trustedIpHeader)?.trim();
   if (!address || address.includes("%") || !isIP(address)) return error(503, "unavailable", "Reporting is temporarily unavailable. Your observation has not been sent.");
   if (Number(request.headers.get("content-length")) > 2048) return error(413, "invalid_input", "This observation is too large.");
   let payload: unknown;

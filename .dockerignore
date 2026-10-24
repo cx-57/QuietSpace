@@ -1,0 +1,12 @@
+.git
+.env*
+!.env.example
+.next*
+node_modules
+.npm-cache
+artifacts
+test-results
+playwright-report
+__pycache__
+*.log
+*.tsbuildinfo

@@ -1,5 +1,7 @@
 # Implementation evidence
 
+Latest: [Stages 11-18 release candidate](11-18.md), October 23, 2026. The local PostgreSQL app, RLS/moderation/concurrency suites, redesigned UI and browser demo are verified. Public deployment/submission remain external gates.
+
 Latest batch: [Stages 05-10](05-10.md), implemented 2026-10-22. Application/build/browser checks pass; real database/RLS/reporting acceptance is still pending. Execution stopped after Stage 10.
 
 The rest of this file is the historical 00-04 handoff, recorded on 2026-10-20. Its runtime availability statements describe that earlier session; see the latest batch for current state.

@@ -1,6 +1,6 @@
 # Database setup and verification
 
-No PostgreSQL, Supabase CLI, Docker or database account is available in this session. **No migration, RLS test, rollback or import has executed against PostgreSQL.** Python checks verify artifact structure and importer behavior only. Database acceptance remains conditional until the commands below pass.
+Updated 2026-10-23: PostgreSQL is available. All three migrations, real RLS/constraint/report/cleanup suites, and import replay have passed in isolated local databases. Real browser-to-PostgreSQL pending/approval/rejection and concurrent limit tests also pass. Hosted Supabase and public deployment remain unverified. See phase-signoffs/11-18.md for current evidence.
 
 ## Disposable PostgreSQL 15+ test database
 
@@ -12,8 +12,10 @@ $env:PGSERVICE = 'quietspace_test'
 psql -X -v ON_ERROR_STOP=1 -f supabase/tests/bootstrap_roles.sql
 psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/202610200001_foundation.sql
 psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/202610220001_report_abuse_controls.sql
+psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/202610230001_cleanup_capability.sql
 psql -X -v ON_ERROR_STOP=1 -f supabase/tests/foundation.sql
 psql -X -v ON_ERROR_STOP=1 -f supabase/tests/reports.sql
+psql -X -v ON_ERROR_STOP=1 -f supabase/tests/cleanup.sql
 python tools/import_venues.py --output artifacts/venues.sql
 psql -X -v ON_ERROR_STOP=1 -f supabase/tests/import_replay.sql
 ```

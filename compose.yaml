@@ -1,0 +1,39 @@
+services:
+  database:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: quietspace_owner
+      POSTGRES_DB: quietspace
+      POSTGRES_PASSWORD: ${QUIETSPACE_OWNER_PASSWORD:?Set a strong owner password}
+      QUIETSPACE_APP_PASSWORD: ${QUIETSPACE_APP_PASSWORD:?Set a different strong hex app password}
+    volumes:
+      - quietspace-postgres:/var/lib/postgresql
+      - ./supabase/tests/bootstrap_roles.sql:/docker-entrypoint-initdb.d/00-roles.sql:ro
+      - ./supabase/migrations/202610200001_foundation.sql:/docker-entrypoint-initdb.d/01-foundation.sql:ro
+      - ./supabase/migrations/202610220001_report_abuse_controls.sql:/docker-entrypoint-initdb.d/02-abuse.sql:ro
+      - ./supabase/migrations/202610230001_cleanup_capability.sql:/docker-entrypoint-initdb.d/02b-cleanup.sql:ro
+      - ./deploy/bootstrap-app.sql:/docker-entrypoint-initdb.d/03-app.sql:ro
+      - ./artifacts/venues.sql:/docker-entrypoint-initdb.d/04-venues.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quietspace_owner -d quietspace"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+  app:
+    build: .
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      QUIETSPACE_DATA_MODE: postgres
+      DATABASE_URL: postgresql://quietspace_app:${QUIETSPACE_APP_PASSWORD}@database:5432/quietspace
+      APP_ORIGIN: ${APP_ORIGIN:?Set the canonical HTTPS origin}
+      REPORTS_ENABLED: ${REPORTS_ENABLED:-false}
+      REPORT_ABUSE_SECRET: ${REPORT_ABUSE_SECRET:?Set a random abuse secret of at least 32 characters}
+      REPORT_TRUSTED_IP_HEADER: x-real-ip
+    restart: unless-stopped
+volumes:
+  quietspace-postgres:

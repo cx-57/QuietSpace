@@ -60,7 +60,9 @@ export function evidenceSummary(reports: ApprovedReport[], spaceId: string, now:
   const latest = eligible.map(r => r.observedAt).sort((a, b) => Date.parse(b) - Date.parse(a))[0] ?? null;
   const dates = new Set(eligible.map(r => new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(r.observedAt))));
   return {
-    label: eligible.length === 0 ? "no_observations" : countsByDimension.noise >= 3 && DIMENSIONS.filter(d => countsByDimension[d] >= 3).length >= 2 ? "recent_observations" : "limited_observations",
+    label: eligible.length === 0 ? "no_observations" : eligible.length < 3 ? "insufficient_observations" :
+      eligible.length >= 6 && dates.size >= 3 && latest !== null && Date.parse(latest) >= now.getTime() - 14 * DAY &&
+      countsByDimension.noise >= 3 && DIMENSIONS.filter(d => countsByDimension[d] >= 3).length >= 2 ? "supported_observations" : "limited_observations",
     approvedRecentCount: eligible.length, countsByDimension, distinctObservationDates: dates.size, latestObservedAt: latest,
   };
 }

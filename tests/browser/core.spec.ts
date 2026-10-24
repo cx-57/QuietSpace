@@ -18,7 +18,7 @@ test("preferences persist through reload and details; search, strict filters and
   await page.getByRole("checkbox", { name: "Accessible entrance" }).check();
   await expect(page.getByRole("article")).toHaveCount(5);
   await page.getByRole("link", { name: "Brighton Branch", exact: true }).click();
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Boston Public Library — Brighton Branch");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Brighton Branch");
   await expect(page.getByText("Not enough evidence for a match", { exact: true })).toBeVisible();
   await expect(page.getByText("No recent community observations", { exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Adjust your preferences" }).click();
@@ -55,7 +55,7 @@ test("keyboard skip link, 320px layouts and automated accessibility on core rout
   await expect(page.getByRole("link", { name: "Skip to content" })).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
-  for (const route of ["/", "/preferences", "/spaces/bpl-brighton", "/spaces/bpl-brighton/report", "/spaces/does-not-exist"]) {
+  for (const route of ["/", "/preferences", "/spaces/bpl-brighton", "/spaces/bpl-brighton/report", "/spaces/does-not-exist", "/about", "/privacy", "/credits"]) {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.goto(route);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
@@ -66,9 +66,22 @@ test("keyboard skip link, 320px layouts and automated accessibility on core rout
   expect(errors).toEqual([]);
   await page.setViewportSize({ width: 1440, height: 1100 });
   await page.goto("/");
-  await page.screenshot({ path: "artifacts/stage-10-desktop.png", fullPage: true });
+  await page.screenshot({ path: "artifacts/release-desktop.png", fullPage: true });
   await page.setViewportSize({ width: 320, height: 800 });
-  await page.screenshot({ path: "artifacts/stage-10-mobile.png", fullPage: true });
+  await page.screenshot({ path: "artifacts/release-mobile.png", fullPage: true });
+});
+
+test("mobile filter disclosure and reduced-motion/forced-color reflow stay usable", async ({page})=>{
+  await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:"reduce",forcedColors:"active"});
+  await page.goto("/");
+  const toggle=page.getByRole("button",{name:"Your space, your way"});
+  await expect(toggle).toHaveAttribute("aria-expanded","false");
+  await toggle.click();await page.getByRole("checkbox",{name:"Step-free access"}).check();
+  await expect(page.getByText("No places meet these filters")).toBeVisible();
+  await toggle.click();await expect(toggle).toBeFocused();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page.setViewportSize({width:640,height:450});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 
 test("missing venues are 404s, curated reports are unavailable and API fails closed", async ({ page, request }) => {
