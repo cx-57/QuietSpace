@@ -105,6 +105,10 @@ figcaption { display:flex; justify-content:space-between; gap:.6rem; color:var(-
 .search-input > .icon { position:absolute; left:1rem; top:50%; transform:translateY(-50%); color:var(--muted); }
 .search-input input { padding-left:3rem; }
 .search-row input,.search-row select { background:transparent; border-color:#b7bdaf; font-size:.78rem; }
+.quiet-quick-filter { display:flex; flex-wrap:wrap; gap:.5rem 1rem; align-items:center; margin-top:.9rem; }
+.quiet-quick-filter p { font-size:.66rem; margin:0; }
+.quiet-quick-filter button { display:inline-flex; align-items:center; gap:.5rem; }
+.quiet-quick-filter button[aria-pressed="true"] { border-color:var(--ink); }
 .results-heading { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; padding-block:1.5rem 1rem; border-bottom:1px solid var(--line); }
 .results-heading h3 { display:flex; gap:.7rem; align-items:center; font-size:.8rem; font-weight:700; }
 .results-heading h3 span { font-size:.65rem; padding:.1rem .45rem; background:var(--tint); border-radius:2px; }
