@@ -13,8 +13,8 @@ const CATEGORY_LABELS: Record<CategoryChoice, string> = {
   museum: "Museums", community_centre: "Community centers",
 };
 
-export function DiscoveryChoices({ directory, category, onCategoryChange }: {
-  directory: Directory; category: CategoryChoice; onCategoryChange: (category: CategoryChoice) => void;
+export function DiscoveryChoices({ directory, category, visibleCount, onCategoryChange }: {
+  directory: Directory; category: CategoryChoice; visibleCount: number; onCategoryChange: (category: CategoryChoice) => void;
 }) {
   const { preferences, update } = usePreferences();
   const ready = useHydrated();
@@ -43,7 +43,7 @@ export function DiscoveryChoices({ directory, category, onCategoryChange }: {
     <div className="choice-details">
       <fieldset className="category-choices"><legend>Explore by place type</legend>
         <div className="choice-pills">{categories.map(id => <button type="button" key={id} className="choice-pill"
-          disabled={!ready} aria-pressed={category === id} onClick={() => onCategoryChange(id)}>{CATEGORY_LABELS[id]}</button>)}</div>
+          disabled={!ready} aria-pressed={category === id} onClick={() => onCategoryChange(id)}>{CATEGORY_LABELS[id]} <span className="choice-count" aria-hidden="true">{id === "all" ? directory.spaces.length : directory.spaces.filter(s => s.category === id).length}</span></button>)}</div>
       </fieldset>
       <fieldset className="verified-choices"><legend>Require source-verified facilities</legend>
         <div className="verified-checks">
@@ -65,6 +65,9 @@ export function DiscoveryChoices({ directory, category, onCategoryChange }: {
           maximumIntensities: { ...preferences.maximumIntensities, [d]: value } })} />)}</div>
       <p className="small muted">Current limits: {DIMENSIONS.map(d => `${DIMENSION_LABELS[d]} ${preferences.maximumIntensities[d] ?? "any"}`).join(" · ")}</p>
     </details>
-    <p className="choice-evidence-notice"><Icon name="shield" size={17} /> These are <strong>your preferences</strong>, not measured descriptions of venues. Matching scores only appear with enough approved community observations; otherwise we show verified facilities and clearly marked unknowns.</p>
+    <p className="choice-evidence-notice"><Icon name="shield" size={17} /> These choices describe <strong>what you want</strong>, not what a venue is definitely like. When visitor evidence is missing, sensory conditions and match scores stay unknown.</p>
+    <button type="button" className="choice-view-results" onClick={() => document.getElementById("results-heading")?.scrollIntoView({ behavior: "auto", block: "start" })}>
+      View {visibleCount} {visibleCount === 1 ? "place" : "places"} <Icon name="arrow" size={17} />
+    </button>
   </section>;
 }

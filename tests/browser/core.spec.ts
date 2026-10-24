@@ -62,12 +62,15 @@ test("multiple environment selections can be combined with place types and verif
   await page.getByRole("button", { name: /Softer lighting/ }).click();
   await expect(page.getByRole("button", { name: /Softer lighting/ })).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Parks & gardens" }).click();
+  await expect(page.getByRole("button", { name: "View 2 places" })).toBeVisible();
   await expect(page.getByRole("article")).toHaveCount(2);
   await expect(page.getByRole("article").getByText("Boston Public Garden")).toBeVisible();
   await page.getByRole("button", { name: "Museums" }).click();
+  await expect(page.getByRole("button", { name: "View 1 place" })).toBeVisible();
   await expect(page.getByRole("article")).toHaveCount(1);
   await expect(page.getByRole("article").getByText("Museum of Fine Arts, Boston")).toBeVisible();
   await page.getByRole("button", { name: "All spaces" }).click();
+  await expect(page.getByRole("button", { name: "View 11 places" })).toBeVisible();
   await expect(page.getByRole("article")).toHaveCount(11);
   await page.getByRole("button", { name: "Accessible entrance" }).click();
   await expect(page.getByRole("article")).toHaveCount(8);
