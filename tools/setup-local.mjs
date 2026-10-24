@@ -38,7 +38,7 @@ await db.query(statement.rows[0].sql);
 await db.query("GRANT anon, service_role TO quietspace_app");
 await db.query("REVOKE ALL ON public.quietspace_migrations FROM public, anon, authenticated, service_role, quietspace_app");
 await db.end();
-const imported = spawnSync("python", ["tools/import_venues.py", "--output", "artifacts/venues.sql"], { cwd: root, stdio: "inherit", windowsHide: true });
+const imported = spawnSync(process.env.PYTHON ?? (process.platform === "win32" ? "python" : "python3"), ["tools/import_venues.py", "--output", "artifacts/venues.sql"], { cwd: root, stdio: "inherit", windowsHide: true });
 if (imported.status !== 0) throw new Error("Venue source validation failed; no review dates were changed.");
 const seed = new pg.Client("postgresql://quietspace_owner@127.0.0.1:55432/quietspace_dev");
 await seed.connect(); await seed.query(readFileSync(join(root, "artifacts/venues.sql"), "utf8")); await seed.end();
@@ -49,4 +49,4 @@ const env = {
   APP_ORIGIN: "http://localhost:3000", REPORT_ABUSE_SECRET: randomBytes(32).toString("hex"), NEXT_TELEMETRY_DISABLED: "1",
 };
 writeFileSync(envPath, "# QuietSpace local setup. Localhost only; never deploy this file.\n" + Object.entries(env).map(([key,value]) => `${key}=${value}`).join("\n") + "\n", { mode: 0o600 });
-console.log("Local PostgreSQL ready; five sourced venues, no fabricated reports. Run npm run dev and open http://localhost:3000.");
+console.log("Local PostgreSQL ready; 11 sourced venues, no fabricated reports. Run npm run dev and open http://localhost:3000.");
