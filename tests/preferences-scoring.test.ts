@@ -60,6 +60,24 @@ test("sparse/absent/no-noise observations cannot produce a numeric score", () =>
   assert.deepEqual(scoreSpace(reports(), DEFAULT_PREFERENCES, id, now), { score: null, reason: "no_preferences" });
 });
 
+test("single-sense preferences work from three approved visits without claiming overall fit", () => {
+  for (const [dimension, preferred] of [["crowds", 2], ["brightness", 3], ["scent", 1]] as const) {
+    const single: Preferences = { ...DEFAULT_PREFERENCES, maximumIntensities: {
+      ...DEFAULT_PREFERENCES.maximumIntensities, [dimension]: preferred,
+    } };
+    const result = scoreSpace(reports(), single, id, now);
+    assert.equal(result.score, 100);
+    if (result.reason !== "eligible") throw new Error("Expected supported single-sense fit");
+    assert.deepEqual(result.dimensions.map(d => d.dimension), [dimension]);
+    assert.match(result.explanation, /Single-sense fit/);
+    assert.equal(scoreSpace(reports(undefined, 2), single, id, now).score, null);
+  }
+  const brighter: Preferences = { ...DEFAULT_PREFERENCES, maximumIntensities: {
+    ...DEFAULT_PREFERENCES.maximumIntensities, brightness: 3,
+  } };
+  assert.equal(scoreSpace(reports({ noise: 1, crowds: 1, brightness: 1, scent: 1 }), brighter, id, now).score, 50);
+});
+
 test("available weights renormalize and null never becomes zero", () => {
   const items = reports({ noise: 5, crowds: 1, brightness: 3, scent: 1 }).map(r => ({ ...r, intensities: { ...r.intensities, brightness: null, scent: null } }));
   const result = scoreSpace(items, preferences, id, now);
