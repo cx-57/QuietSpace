@@ -12,7 +12,7 @@ let created=false;
 try{
   await owner.query(`CREATE DATABASE ${database}`);created=true;
   for(const file of ['supabase/tests/bootstrap_roles.sql','supabase/migrations/202610200001_foundation.sql','supabase/migrations/202610220001_report_abuse_controls.sql','supabase/migrations/202610230001_cleanup_capability.sql','supabase/tests/foundation.sql','supabase/tests/reports.sql','supabase/tests/cleanup.sql'])run(file);
-  const seed=spawnSync('python',['tools/import_venues.py','--output','artifacts/venues.sql'],{stdio:'inherit',windowsHide:true});if(seed.status!==0)throw new Error('Venue import validation failed');
+  const seed=spawnSync(process.env.PYTHON??(process.platform==='win32'?'python':'python3'),['tools/import_venues.py','--output','artifacts/venues.sql'],{stdio:'inherit',windowsHide:true});if(seed.status!==0)throw new Error('Venue import validation failed');
   run('supabase/tests/import_replay.sql');
   console.log('PASS: all real PostgreSQL migration, RLS, report, limit, retention and import replay checks.');
 }finally{
