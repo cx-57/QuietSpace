@@ -120,6 +120,26 @@ test("search is case-insensitive by all area/name terms, ranking stable and unkn
   assert.equal(discover([a, scored], preferences, "", "match", now)[0].space.id, id);
 });
 
+test("low-noise discovery prioritizes fresh source-listed study spaces without inventing scores", () => {
+  const quietEvidence = { verification: "verified" as const, value: true,
+    sourceUrl: "https://example.org/study", checkedAt: now.toISOString(), evidence: "SAMPLE quiet-study listing" };
+  const documented = space({ id: "documented", name: "Zebra SAMPLE", features: { ...space().features, quiet_room: quietEvidence } });
+  const unknown = space({ id: "unknown", name: "Alpha SAMPLE" });
+  const quietPrefs: Preferences = { ...DEFAULT_PREFERENCES, maximumIntensities: { ...DEFAULT_PREFERENCES.maximumIntensities, noise: 1 } };
+  const results = discover([unknown, documented], quietPrefs, "", "match", now);
+  assert.deepEqual(results.map(r => r.space.id), ["documented", "unknown"]);
+  assert.equal(results[0].match.score, null);
+  assert.equal(results[1].match.score, null);
+  assert.deepEqual(discover([unknown, documented], DEFAULT_PREFERENCES, "", "match", now).map(r => r.space.id), ["unknown", "documented"]);
+  assert.deepEqual(discover([unknown, documented], quietPrefs, "", "name", now).map(r => r.space.id), ["unknown", "documented"]);
+  const stale = space({ ...documented, features: { ...documented.features,
+    quiet_room: { ...quietEvidence, checkedAt: "2026-01-01T00:00:00Z" } } });
+  assert.deepEqual(discover([unknown, stale], quietPrefs, "", "match", now).map(r => r.space.id), ["unknown", "documented"]);
+  const negative = space({ ...documented, features: { ...documented.features,
+    quiet_room: { ...quietEvidence, value: false } } });
+  assert.deepEqual(discover([unknown, negative], quietPrefs, "", "match", now).map(r => r.space.id), ["unknown", "documented"]);
+});
+
 test("scoring never mutates observations or preferences", () => {
   const rows = reports(); const before = JSON.stringify({ rows, preferences });
   scoreSpace(rows, preferences, id, now);

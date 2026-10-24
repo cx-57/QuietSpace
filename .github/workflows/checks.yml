@@ -11,7 +11,7 @@ jobs:
         with:
           python-version: '3.14'
       - run: python -m unittest discover -s tests -p "test_*.py" -v
-      - run: python tools/import_venues.py --as-of 2026-10-20T23:59:59Z --output artifacts/venues.sql
+      - run: python tools/import_venues.py --as-of 2026-10-23T23:59:59Z --output artifacts/venues.sql
       - run: git diff --check
   application:
     runs-on: ubuntu-latest

@@ -1,0 +1,46 @@
+name: Suggest a public space
+description: Help us identify a real neighborhood location to review for QuietSpace
+title: "[Venue suggestion] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping build the neighborhood guide. This is a **public issue**. Do not include diagnoses, home addresses, personal contact details, or other sensitive information. Suggest publicly accessible venues only; a moderator must verify official sources before a venue is listed.
+  - type: input
+    id: venue
+    attributes:
+      label: Public venue name
+      description: Official name of a public library, park, community center or museum
+      placeholder: Name of public venue
+    validations:
+      required: true
+  - type: input
+    id: neighborhood
+    attributes:
+      label: City / neighborhood
+      placeholder: Boston, MA — neighborhood
+    validations:
+      required: true
+  - type: input
+    id: official_source
+    attributes:
+      label: Official venue source URL
+      description: Use the venue or municipal website, not a personal social profile
+      placeholder: https://
+    validations:
+      required: true
+  - type: textarea
+    id: missing
+    attributes:
+      label: What should be verified?
+      description: Facilities, study space, hours, access, or other factual details. No private stories needed.
+    validations:
+      required: false
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy reminder
+      options:
+        - label: My suggestion contains only public venue information and no personal details.
+          required: true

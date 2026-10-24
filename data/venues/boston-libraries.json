@@ -18,10 +18,18 @@
       "is_fixture": false,
       "features": {
         "accessible_entrance": {
-          "verification": "verified", "value": true,
+          "verification": "verified",
+          "value": true,
           "source_url": "https://www.bpl.org/locations/central/",
           "checked_at": "2026-10-20T18:00:00Z",
           "evidence": "The official Facilities section lists accessible entrances. This does not verify step-free routes throughout the building or toilets."
+        },
+        "quiet_room": {
+          "verification": "verified",
+          "value": true,
+          "source_url": "https://www.bpl.org/central-library-points-of-interest/",
+          "checked_at": "2026-10-23T20:00:00Z",
+          "evidence": "BPL describes Bates Hall, a reading room inside Central Library, as a favorite place for reading and quiet study. This verifies a designated study space, not the current noise level throughout the building."
         }
       }
     },
@@ -42,7 +50,8 @@
       "is_fixture": false,
       "features": {
         "accessible_entrance": {
-          "verification": "verified", "value": true,
+          "verification": "verified",
+          "value": true,
           "source_url": "https://www.bpl.org/locations/brighton/",
           "checked_at": "2026-10-20T18:00:00Z",
           "evidence": "The branch Facilities section lists accessible entrances. No claim is made about step-free internal routes or toilets."
@@ -66,7 +75,8 @@
       "is_fixture": false,
       "features": {
         "accessible_entrance": {
-          "verification": "verified", "value": true,
+          "verification": "verified",
+          "value": true,
           "source_url": "https://www.bpl.org/locations/connolly/",
           "checked_at": "2026-10-20T18:00:00Z",
           "evidence": "Official branch Facilities section lists accessible entrances. Specific internal routes and toilet accessibility remain unknown."
@@ -90,10 +100,18 @@
       "is_fixture": false,
       "features": {
         "accessible_entrance": {
-          "verification": "verified", "value": true,
+          "verification": "verified",
+          "value": true,
           "source_url": "https://www.bpl.org/locations/east-boston/",
           "checked_at": "2026-10-20T18:03:00Z",
-          "evidence": "Official Facilities section lists accessible entrances. Its combined quiet/study-room label does not establish measured quietness; no quiet-room claim is imported."
+          "evidence": "Official Facilities section lists accessible entrances. It does not verify internal step-free routes, toilets or current sensory conditions."
+        },
+        "quiet_room": {
+          "verification": "verified",
+          "value": true,
+          "source_url": "https://www.bpl.org/locations/east-boston/",
+          "checked_at": "2026-10-23T20:00:00Z",
+          "evidence": "BPL's East Boston Facilities section lists quiet/study room(s). The label does not establish current noise, access or room availability."
         }
       }
     },
@@ -114,7 +132,8 @@
       "is_fixture": false,
       "features": {
         "accessible_entrance": {
-          "verification": "verified", "value": true,
+          "verification": "verified",
+          "value": true,
           "source_url": "https://www.bpl.org/locations/south-boston/",
           "checked_at": "2026-10-20T18:03:00Z",
           "evidence": "Official Facilities section lists accessible entrances. Specific step-free routes, seating suitability and toilet accessibility remain unknown."

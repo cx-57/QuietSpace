@@ -17,6 +17,10 @@ test("real browser -> pending PostgreSQL -> operator approval -> shared evidence
     await page.getByLabel("Noise", { exact: true }).selectOption("2");
     await page.getByLabel("Crowds", { exact: true }).selectOption("3");
     await page.getByLabel("Brightness", { exact: true }).selectOption("3");
+    await expect.poll(async () => page.evaluate(() => {
+      const raw = localStorage.getItem("quietspace.preferences.v1");
+      return raw ? JSON.parse(raw).maximumIntensities : null;
+    })).toMatchObject({ noise: 2, crowds: 3, brightness: 3 });
     await page.goto("/spaces/sample-test-library/report");
     const local = await page.evaluate(()=>{const d=new Date(Date.now()-3600000); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);});
     await page.getByLabel("When did you visit?").fill(local);

@@ -24,11 +24,11 @@ QuietSpace starts with this experience: people need different surroundings, and 
 
 ## What it does
 
-Visitors choose optional noise, crowd, brightness and scent preferences in their browser. They browse five real, source-reviewed Boston Public Library locations, search by name or area, and require verified facilities. Each venue shows source dates, facility evidence, unknowns and any approved sensory observations.
+Visitors choose optional noise, crowd, brightness and scent preferences in their browser. A one-click quiet-study shortcut highlights officially documented study spaces **even with zero sensory observations**—without claiming the buildings are currently quiet or inventing numeric scores. They browse five real, source-reviewed Boston Public Library locations, search by name or area, and require verified facilities. Each venue shows source dates, facility evidence, unknowns and any approved sensory observations.
 
 Compatibility scores appear only when there is enough recent evidence. A high fit is separate from evidence strength and never promises live conditions. Historical patterns use the venue's local time and remain unknown when there are fewer than three observations in a period.
 
-Visitors can contribute structured observations. Reports persist pending in PostgreSQL, are checked against the same rating/time rules on the server and database, and stay hidden until a trusted operator approves them. Preferences are private; no names, accounts, diagnosis, free-text comments or device location are required.
+Visitors can contribute structured observations on connected reporting deployments. The Community hub displays honest venue and approved observation totals, shows locations needing check-ins, and provides public GitHub issue templates for proposing additional public venues and product improvements. Each venue can show up to six structured approved sensory reviews, rather than fabricated comments or star ratings. Reports persist pending in PostgreSQL, are checked against the same rating/time rules on the server and database, and stay hidden until a trusted operator approves them. Preferences are private; no names, accounts, diagnosis, free-text comments or device location are required.
 
 ## How it was built
 
@@ -39,7 +39,7 @@ The design is an editorial neighborhood guide: warm paper, restrained rust accen
 ## Challenges and decisions
 
 - Sparse evidence must stay sparse. The real venue records contain no invented observations; synthetic reporting demonstrations use a separate, clearly labeled test database.
-- A source-confirmed entrance is narrower than verified whole-building accessibility. Unknowns fail a strict required-facility filter.
+- A library building is not automatically quiet. Officially listed study spaces can help visitors choose where to investigate while real noise remains unknown. A source-confirmed entrance is narrower than verified whole-building accessibility. Unknowns fail a strict required-facility filter.
 - A fit heuristic and the strength of its evidence answer different questions, so they are labeled separately.
 - Safe public contribution needs more than a form. We tested pending visibility, operator approval/rejection, RLS, duplicate/rapid/concurrent requests and time-bounded cleanup against actual PostgreSQL.
 - Visual polish had to preserve keyboard use, mobile reflow, contrast and reduced motion. Browser checks found issues that were corrected before release preparation.
@@ -54,7 +54,7 @@ The project concept, problem description and direction came from the creator. Op
 
 ## Submission links to complete
 
-- Public repository: verify the public visibility and final contents of `https://github.com/zaina-ml/QuietSpace-` before using this link. This session did not push or change visibility.
-- Demo: `artifacts/quietspace-demo.webm` is a silent captioned browser recording; upload to an accepted video host and add its public URL. Optionally add narration using [the script](demo-script.md).
+- Public repository: `https://github.com/cx-57/QuietSpace` (currently **private**; make public only after a secrets, content, and license review).
+- Demo: regenerate `artifacts/quietspace-demo.webm` to include the new quiet-study and Community flows, review it, upload to an accepted video host, and insert its public URL. Existing footage predates the changes. Optionally add narration using [the script](demo-script.md).
 - Hosted application: no public endpoint has been deployed in this session. Local app: `http://localhost:3000`.
 - Contributor names and eligibility: the creator must supply/confirm the final Devpost team details.

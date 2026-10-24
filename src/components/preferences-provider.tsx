@@ -48,6 +48,14 @@ export function PreferencesProvider({ children }: { children: React.ReactNode })
 }
 export function usePreferences() { return useContext(Context); }
 
+// Interactive controls must not accept changes before hydration attaches handlers.
+const hydrationSubscribe = () => () => {};
+const hydratedOnClient = () => true;
+const notHydratedOnServer = () => false;
+export function useHydrated() {
+  return useSyncExternalStore(hydrationSubscribe, hydratedOnClient, notHydratedOnServer);
+}
+
 export function StorageNotice() {
   const { storage } = usePreferences();
   if (storage === "ready") return null;

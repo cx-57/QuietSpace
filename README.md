@@ -2,7 +2,7 @@
 
 Find a place that feels right. A calm neighborhood guide to public places, with private sensory preferences, source-reviewed facilities and moderated observations.
 
-The app includes discovery, strict access filters, local preference persistence, explainable matching, venue details, real PostgreSQL report submission, operator moderation, evidence reliability and historical periods. The directory starts with **five real Boston Public Library locations**. Their unknown sensory conditions remain unknown; no community observations were invented for these venues.
+The app includes discovery, strict access filters, local preference persistence, explainable matching, venue details, real PostgreSQL report submission, operator moderation, evidence reliability and historical periods. **Community** includes an evidence-based participation dashboard, structured approved sensory reviews (not fake testimonials), places awaiting observations, and public GitHub templates for proposing venues and providing usability feedback. With a low-noise preference (1–2/5), default suggested ordering prioritizes fresh, source-listed quiet/study spaces among unscored venues. This is a **facility signal, never a noise measurement or fit score**; numeric matches still require sufficient approved reports. The directory starts with **five real Boston Public Library locations**. Their unknown sensory conditions remain unknown; no community observations were invented for these venues.
 
 ## Run the complete local app
 
@@ -16,7 +16,14 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 
 Open **[http://localhost:3000](http://localhost:3000)**. Setup creates a dedicated loopback PostgreSQL cluster on port 55432, applies migrations, imports five sourced venues and writes an ignored `.env.local` with restricted application credentials. It preserves an existing custom env file. The development cluster uses loopback trust authentication; never expose or deploy it.
 
-With no configuration, the app instead offers the same five sourced venues as a clearly labeled **read-only curated guide**. Choose `QUIETSPACE_DATA_MODE=postgres` for direct role-constrained transactions or `supabase` for the existing REST adapter. A connected-service failure never silently substitutes local data.
+With no configuration, the app instead offers the same five sourced venues as a clearly labeled **read-only curated guide**. Community reviews show an honest zero state, and the submission CTA is hidden when reporting is disabled. The two verified quiet/study facilities are present in the curated dataset; for a connected database, rerun the reviewed venue importer and apply its SQL (see [database setup](docs/engineering/database.md)) so source-backed quiet results also appear there. Choose `QUIETSPACE_DATA_MODE=postgres` for direct role-constrained transactions or `supabase` for the existing REST adapter. A connected-service failure never silently substitutes local data.
+
+## Community participation
+
+- The `/community` route gives real counts of eligible approved observations, shows places that need firsthand reports, and links to public GitHub issue templates for suggesting new venues and improving the product. GitHub suggestions require the repository to be **public**, and users must sign in; issues and usernames are public.
+- Venues display up to six structured **approved** community sensory check-ins. There are no star ratings, free-text testimonials, accounts or synthetic public reviews. The page rounds visit dates to the month; **approved exact timestamps remain available in the public data** used for scoring, as disclosed on the privacy page.
+- Community report submission requires connected PostgreSQL/Supabase, trusted overwritten IP headers, a configured HTTPS origin, rate-limiting credentials and an operating moderator. Curated read-only mode never silently accepts data.
+- Before enabling public submissions, verify production ingress, cleanup, RLS, moderation and data-retention requirements in [reporting setup](docs/engineering/reporting.md). Running the site in curated mode remains the safe fallback.
 
 ## Moderate observations
 
@@ -41,9 +48,9 @@ npm run test:e2e
 npm run check:release
 ```
 
-`check` runs ESLint, TypeScript, 32 Node tests and the packaged production build. Python supplies 26 importer/cross-layer checks. Database tests create and remove an isolated verification database, exercising migrations, RLS, pending/approval/rejection, persistent limits, cleanup and import replay. Browser tests cover curated production mode, a controlled REST test double, and actual PostgreSQL, including concurrent submissions. Synthetic records are confined to separate test databases and ports.
+`check` runs ESLint, TypeScript, the Node test suite and the packaged production build. Python supplies importer/cross-layer checks. Database tests create and remove an isolated verification database, exercising migrations, RLS, pending/approval/rejection, persistent limits, cleanup and import replay. Browser tests cover curated production mode, a controlled REST test double, and actual PostgreSQL, including concurrent submissions. Synthetic records are confined to separate test databases and ports.
 
-Browser tests default to installed Edge. For Chromium, run `npx playwright install chromium` and set `PLAYWRIGHT_CHANNEL=chromium`. They manage ports 3100–3102 and 3987. Screenshots are under ignored `artifacts/release-desktop.png` and `artifacts/release-mobile.png`. Automated checks do not replace a screen-reader or user study. CI is configured for PostgreSQL and Chromium; no remote CI execution is claimed.
+Browser tests default to installed Edge. For Chromium, run `npx playwright install chromium` and set `PLAYWRIGHT_CHANNEL=chromium`. They manage ports 3100–3102 and 3987. Screenshots are under ignored `artifacts/release-desktop.png` and `artifacts/release-mobile.png`. Automated checks do not replace a screen-reader or user study. CI is configured for PostgreSQL and Chromium. GitHub Actions attempts on October 23–24 failed before assigning a runner; those jobs do not establish whether the current code passes or fails its tests. Check the latest run and run the commands above in a compatible environment before production use.
 
 ## Demo and release
 
@@ -66,4 +73,4 @@ This produces `artifacts/quietspace-demo.webm`: a silent, captioned 2–3 minute
 
 The redesign uses a custom arch identity, self-hosted typography, indexed venue rows, quiet colors and an attributed public-domain archival photograph. The optional embedded map is deliberately deferred because all venue coordinates remain unverified. List navigation is complete without it.
 
-Production dependency audit: **0 reported vulnerabilities** on October 23, 2026. The inherited development-only ESLint/braces advisory remains documented in the sign-off; no forced framework downgrade was applied. The lockfile is genuine. No deployment, repository push, Devpost submission, fabricated user research or current-conditions guarantee is claimed.
+Production dependency audit: **0 reported vulnerabilities** on October 23, 2026. The inherited development-only ESLint/braces advisory remains documented in the sign-off; no forced framework downgrade was applied. The lockfile is genuine. The code changes in [PR #1](https://github.com/cx-57/QuietSpace/pull/1) were committed through GitHub. No public deployment, Devpost submission, fabricated user research or current-conditions guarantee is claimed.
