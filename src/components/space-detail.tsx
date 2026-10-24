@@ -8,6 +8,7 @@ import { effectiveFacility } from "../lib/validation";
 import { ConfidenceLabel, MatchExplanation, SensorySnapshot, SourceDate } from "./evidence";
 import { StorageNotice, usePreferences } from "./preferences-provider";
 import { HistoricalPeriods } from "./historical-periods";
+import { CommunityReviews } from "./community-reviews";
 
 export function SpaceDetail({ space, asOf }: { space: PublicSpace; asOf: string }) {
   const { preferences } = usePreferences();
@@ -35,6 +36,7 @@ export function SpaceDetail({ space, asOf }: { space: PublicSpace; asOf: string 
           {item.verification === "verified" && <><p>{item.evidence}</p><p className="small"><a href={item.sourceUrl}>Facility source</a> · Reviewed <SourceDate value={item.checkedAt} /></p></>}</dd></div>;
       })}</dl>
     </section>
+    <CommunityReviews space={space} now={now} />
     <HistoricalPeriods space={space} now={now} />
   </>;
 }
