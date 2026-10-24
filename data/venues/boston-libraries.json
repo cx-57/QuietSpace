@@ -2,6 +2,31 @@
   "format_version": 1,
   "venues": [
     {
+      "slug": "bpl-brighton",
+      "name": "Boston Public Library — Brighton Branch",
+      "address": "40 Academy Hill Road, Brighton, MA 02135",
+      "category": "library",
+      "latitude": null,
+      "longitude": null,
+      "time_zone": "America/New_York",
+      "public_access": "public",
+      "source_url": "https://www.bpl.org/locations/brighton/",
+      "source_evidence": "Official public-library branch page provides its name, street address and public visiting information. No observation of present sensory conditions was made.",
+      "checked_at": "2026-10-20T18:00:00Z",
+      "provenance_status": "verified",
+      "published": true,
+      "is_fixture": false,
+      "features": {
+        "accessible_entrance": {
+          "verification": "verified",
+          "value": true,
+          "source_url": "https://www.bpl.org/locations/brighton/",
+          "checked_at": "2026-10-20T18:00:00Z",
+          "evidence": "The branch Facilities section lists accessible entrances. No claim is made about step-free internal routes or toilets."
+        }
+      }
+    },
+    {
       "slug": "bpl-central",
       "name": "Boston Public Library — Central Library in Copley Square",
       "address": "700 Boylston Street, Boston, MA 02116",
@@ -30,31 +55,6 @@
           "source_url": "https://www.bpl.org/central-library-points-of-interest/",
           "checked_at": "2026-10-23T20:00:00Z",
           "evidence": "BPL describes Bates Hall, a reading room inside Central Library, as a favorite place for reading and quiet study. This verifies a designated study space, not the current noise level throughout the building."
-        }
-      }
-    },
-    {
-      "slug": "bpl-brighton",
-      "name": "Boston Public Library — Brighton Branch",
-      "address": "40 Academy Hill Road, Brighton, MA 02135",
-      "category": "library",
-      "latitude": null,
-      "longitude": null,
-      "time_zone": "America/New_York",
-      "public_access": "public",
-      "source_url": "https://www.bpl.org/locations/brighton/",
-      "source_evidence": "Official public-library branch page provides its name, street address and public visiting information. No observation of present sensory conditions was made.",
-      "checked_at": "2026-10-20T18:00:00Z",
-      "provenance_status": "verified",
-      "published": true,
-      "is_fixture": false,
-      "features": {
-        "accessible_entrance": {
-          "verification": "verified",
-          "value": true,
-          "source_url": "https://www.bpl.org/locations/brighton/",
-          "checked_at": "2026-10-20T18:00:00Z",
-          "evidence": "The branch Facilities section lists accessible entrances. No claim is made about step-free internal routes or toilets."
         }
       }
     },
@@ -112,6 +112,95 @@
           "source_url": "https://www.bpl.org/locations/east-boston/",
           "checked_at": "2026-10-23T20:00:00Z",
           "evidence": "BPL's East Boston Facilities section lists quiet/study room(s). The label does not establish current noise, access or room availability."
+        }
+      }
+    },
+    {
+      "slug": "bpl-grove-hall",
+      "name": "Boston Public Library — Grove Hall Branch",
+      "address": "41 Geneva Avenue, Dorchester, MA 02121",
+      "category": "library",
+      "latitude": null,
+      "longitude": null,
+      "time_zone": "America/New_York",
+      "public_access": "public",
+      "source_url": "https://www.bpl.org/locations/grove-hall/",
+      "source_evidence": "Official Boston Public Library branch page provides this public location and lists facilities. Room availability and sensory conditions were not independently observed.",
+      "checked_at": "2026-10-23T22:00:00Z",
+      "provenance_status": "verified",
+      "published": true,
+      "is_fixture": false,
+      "features": {
+        "quiet_room": {
+          "verification": "verified",
+          "value": true,
+          "source_url": "https://www.bpl.org/locations/grove-hall/",
+          "checked_at": "2026-10-23T22:00:00Z",
+          "evidence": "Official Grove Hall Facilities list includes quiet/study room(s). The page does not confirm current noise levels, study room access, or whether the branch is quiet overall."
+        }
+      }
+    },
+    {
+      "slug": "bpl-jamaica-plain",
+      "name": "Boston Public Library — Jamaica Plain Branch",
+      "address": "30 South Street, Jamaica Plain, MA 02130",
+      "category": "library",
+      "latitude": null,
+      "longitude": null,
+      "time_zone": "America/New_York",
+      "public_access": "public",
+      "source_url": "https://www.bpl.org/locations/jamaica-plain/",
+      "source_evidence": "Official Boston Public Library branch page provides this public location and lists facilities. Room availability and sensory conditions were not independently observed.",
+      "checked_at": "2026-10-23T22:00:00Z",
+      "provenance_status": "verified",
+      "published": true,
+      "is_fixture": false,
+      "features": {
+        "accessible_entrance": {
+          "verification": "verified",
+          "value": true,
+          "source_url": "https://www.bpl.org/locations/jamaica-plain/",
+          "checked_at": "2026-10-23T22:00:00Z",
+          "evidence": "Official Facilities list includes accessible entrance(s); this does not verify internal step-free routes or accessible toilets."
+        },
+        "quiet_room": {
+          "verification": "verified",
+          "value": true,
+          "source_url": "https://www.bpl.org/locations/jamaica-plain/",
+          "checked_at": "2026-10-23T22:00:00Z",
+          "evidence": "Official Jamaica Plain Facilities list includes quiet/study room(s). This is a room listing, not a measurement of current sound or a reservation guarantee."
+        }
+      }
+    },
+    {
+      "slug": "bpl-mattapan",
+      "name": "Boston Public Library — Mattapan Branch",
+      "address": "1350 Blue Hill Avenue, Mattapan, MA 02126",
+      "category": "library",
+      "latitude": null,
+      "longitude": null,
+      "time_zone": "America/New_York",
+      "public_access": "public",
+      "source_url": "https://www.bpl.org/locations/mattapan/",
+      "source_evidence": "Official Boston Public Library branch page provides this public location and lists facilities. Room availability and sensory conditions were not independently observed.",
+      "checked_at": "2026-10-23T22:00:00Z",
+      "provenance_status": "verified",
+      "published": true,
+      "is_fixture": false,
+      "features": {
+        "accessible_entrance": {
+          "verification": "verified",
+          "value": true,
+          "source_url": "https://www.bpl.org/locations/mattapan/",
+          "checked_at": "2026-10-23T22:00:00Z",
+          "evidence": "Official Facilities list includes accessible entrance(s); internal routes, toilets and current conditions remain unverified."
+        },
+        "quiet_room": {
+          "verification": "verified",
+          "value": true,
+          "source_url": "https://www.bpl.org/locations/mattapan/",
+          "checked_at": "2026-10-23T22:00:00Z",
+          "evidence": "Official Mattapan Facilities list includes quiet/study room(s). It does not establish real-time noise, availability or access rules."
         }
       }
     },
