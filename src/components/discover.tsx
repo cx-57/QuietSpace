@@ -24,7 +24,7 @@ export function Discover({ directory }: { directory: Directory }) {
   return <>
     <StorageNotice />
     <section className="places-section" id="places" aria-labelledby="places-title"><div className="section-heading"><div><p className="eyebrow">THE NEIGHBORHOOD GUIDE</p><h2 id="places-title">Somewhere for <em>your kind of day.</em></h2></div><p className="location-stamp"><Icon name="pin" size={17} /> Boston, Massachusetts</p></div>
-    <DiscoveryChoices directory={directory} category={category} onCategoryChange={setCategory} />
+    <DiscoveryChoices directory={directory} category={category} visibleCount={results.length} onCategoryChange={setCategory} />
     <div className="discovery-layout"><aside className="filters" aria-label="Discovery filters">
       <button className="filters-toggle" type="button" aria-expanded={filtersOpen} aria-controls="filter-options" onClick={() => setFiltersOpen(!filtersOpen)}><Icon name="sliders" size={18} />Your space, your way <span>{filtersOpen ? "−" : "+"}</span></button>
       <noscript><Link href="/preferences">Choose filters in preferences</Link></noscript>
@@ -43,10 +43,10 @@ export function Discover({ directory }: { directory: Directory }) {
       <p className="directory-note" role="status">{DIMENSIONS.some(d => preferences.maximumIntensities[d] !== null)
         ? "Your atmosphere choices are active. Where there aren't enough real observations, sensory conditions remain unknown; preference selections do not create ratings."
         : "Choose a sensory profile or fine-tune individual senses above. Source-verified facilities help narrow the options while community evidence grows."}</p>
-      <div className="results-heading"><h3 id="results-heading">Places to explore <span role="status">{results.length}</span></h3><span className="small muted">Source-reviewed public places</span></div>
+      <div className="results-heading"><h3 id="results-heading">Places to explore <span role="status">{results.length}</span></h3><span className="small muted">{category === "all" ? "All verified public listings" : "Filtered by place type"} · No live-condition claims</span></div>
       {directory.mode === "curated" && <p className="directory-note">Read-only guide · No community reports included. <Link href="/about#evidence">How we check places</Link></p>}
       {seekingQuiet && <p className="directory-note" role="status">{sort === "match" ? "Low-noise preference: officially listed study areas appear ahead of other places without sensory scores." : "Low-noise preference selected; sorting by name."} Official listings do not measure current sound levels. Other places may also have suitable areas that are not yet verified.</p>}
-      {!results.length ? <div className="empty-state"><h3>{directory.spaces.length ? "No places meet these filters" : "No published places are available"}</h3><p>{directory.spaces.length ? "Try another name or area, or review required facilities. Unknown facilities are excluded when required." : "Source evidence may need review. Check back later."}</p><button className="secondary" type="button" onClick={() => { setQuery(""); setCategory("all"); update(DEFAULT_PREFERENCES, true); }}>Clear search and preferences</button></div>
+      {!results.length ? <div className="empty-state"><h3>{directory.spaces.length ? "No places meet these filters" : "No published places are available"}</h3><p>{directory.spaces.length ? "Try a broader search, a different place type or fewer required facilities. Sensory preferences alone do not hide places without observations." : "Source evidence may need review. Check back later."}</p><button className="secondary" type="button" onClick={() => { setQuery(""); setCategory("all"); setSort("match"); update(DEFAULT_PREFERENCES, true); }}>Clear all filters</button></div>
         : <div className="place-list">{results.map(({ space, match }, index) => <SpaceCard key={space.id} space={space} match={match} now={now} index={index + 1} seekingQuiet={seekingQuiet} />)}</div>}
       <p className="results-footnote"><Icon name="book" size={16} /> Getting to know a place takes time. A match appears only when there’s enough recent evidence.</p>
     </section></div></section>
