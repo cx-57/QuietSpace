@@ -2,10 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFileSync } from "node:fs";
 import { adaptFacility, adaptReport, adaptSpace, safeSource } from "../src/lib/public-data.ts";
-const now = new Date("2026-10-23T23:59:00Z");
+const now = new Date("2026-10-24T23:59:00Z");
 const venues = JSON.parse(readFileSync(new URL("../data/venues/boston-libraries.json", import.meta.url), "utf8")).venues;
-test("curated directory has 11 sourced places with unknown sensory evidence", () => {
-  assert.equal(venues.length, 11);
+test("expanded directory has at least 26 unique sourced places with unknown sensory evidence", () => {
+  assert.ok(venues.length >= 26);
+  assert.equal(new Set(venues.map((v: { slug: string }) => v.slug)).size, venues.length);
   for (const row of venues) {
     const space = adaptSpace(row, now, true)!;
     assert.equal(space.id, row.slug);
@@ -18,7 +19,7 @@ test("curated directory has 11 sourced places with unknown sensory evidence", ()
   }
 });
 test("private, unpublished, stale, future, unverified and fixture parents fail closed", () => {
-  for (const overrides of [{ published: false }, { public_access: "restricted" }, { is_fixture: true }, { provenance_status: "unverified" }, { checked_at: "2026-01-01T00:00:00Z" }, { checked_at: "2026-10-24T00:00:00Z" }]) assert.equal(adaptSpace({ ...venues[0], ...overrides }, now, true), null);
+  for (const overrides of [{ published: false }, { public_access: "restricted" }, { is_fixture: true }, { provenance_status: "unverified" }, { checked_at: "2026-01-01T00:00:00Z" }, { checked_at: "2026-10-25T00:00:00Z" }]) assert.equal(adaptSpace({ ...venues[0], ...overrides }, now, true), null);
 });
 test("invalid source protocols, credentials, coordinates, IDs and zones are rejected", () => {
   for (const url of ["javascript:alert(1)", "http://example.org", "https://name:pass@example.org/"]) assert.throws(() => safeSource(url));

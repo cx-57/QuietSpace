@@ -44,6 +44,7 @@ export interface SpaceDetails extends SpaceSummary {
 export interface PublicSpace extends SpaceSummary {
   features: Record<FeatureKey, FacilityEvidence>;
   reports: ApprovedReport[];
+  visitorRatings?: import("./visitor-ratings.ts").PlaceVisitorRatings;
 }
 export interface Directory {
   mode: "curated" | "supabase" | "postgres";

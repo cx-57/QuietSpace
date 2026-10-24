@@ -16,7 +16,7 @@ from tools.import_venues import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-AS_OF = datetime(2026, 10, 23, 23, 59, 59, tzinfo=timezone.utc)
+AS_OF = datetime(2026, 10, 24, 23, 59, 59, tzinfo=timezone.utc)
 
 
 class ImportTests(unittest.TestCase):
@@ -28,7 +28,7 @@ class ImportTests(unittest.TestCase):
 
     def test_real_curated_batch_has_multiple_venue_types_no_sensory_observations(self):
         venues = self.validate()
-        self.assertEqual(len(venues), 11)
+        self.assertGreaterEqual(len(venues), 26)
         self.assertTrue(all(venue["public_access"] == "public" and not venue["is_fixture"] for venue in venues))
         self.assertTrue(all(venue["latitude"] is None and venue["longitude"] is None for venue in venues))
         self.assertEqual({v["category"] for v in venues}, {"library", "park", "museum"})
@@ -36,7 +36,7 @@ class ImportTests(unittest.TestCase):
         self.assertTrue(all(v["features"]["accessible_entrance"]["value"] is True
                             for v in venues if v["slug"] in {"bpl-central", "bpl-east-boston", "mfa-boston"}))
         self.assertTrue(all(v["features"]["seating"]["value"] is True
-                            for v in venues if v["category"] == "park"))
+                            for v in venues if v["slug"] in {"boston-common", "boston-public-garden", "jamaica-pond"}))
         self.assertTrue(all(venue["features"]["step_free_access"] == UNKNOWN for venue in venues))
 
     def test_unknown_and_verified_false_are_distinct(self):
@@ -114,7 +114,7 @@ class ImportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValidationError, "stale"):
             self.validate()
         self.document["venues"][0].update(published=False, provenance_status="needs_review")
-        self.assertEqual(len(self.validate()), 11)
+        self.assertEqual(len(self.validate()), len(self.document["venues"]))
 
     def test_unverified_published_source_rejected(self):
         self.document["venues"][0]["provenance_status"] = "unverified"
@@ -122,7 +122,7 @@ class ImportTests(unittest.TestCase):
             self.validate()
 
     def test_timestamp_and_timezone_validation(self):
-        for stamp in ("2026-02-30T12:00:00Z", "2026-10-20", "2026-10-20T18:00:00", "2026-10-24T00:00:00Z",
+        for stamp in ("2026-02-30T12:00:00Z", "2026-10-20", "2026-10-20T18:00:00", "2026-10-25T00:00:00Z",
                       "2026-10-20T12:00:00+00:99", "2026-10-20T12:00:00+14:01", "2026-10-20T12:00:00-23:00", None):
             with self.subTest(stamp=stamp):
                 document = deepcopy(self.document)
@@ -147,7 +147,7 @@ class ImportTests(unittest.TestCase):
 
     def test_feature_verification_requires_fresh_specific_evidence(self):
         for changes in ({"value": 1}, {"evidence": ""}, {"source_url": None}, {"checked_at": "2026-01-01T00:00:00Z"},
-                        {"checked_at": "2026-10-24T00:00:00Z"}, {"verification": "community_reported"}):
+                        {"checked_at": "2026-10-25T00:00:00Z"}, {"verification": "community_reported"}):
             with self.subTest(changes=changes):
                 document = deepcopy(self.document)
                 document["venues"][0]["features"]["accessible_entrance"].update(changes)
@@ -199,7 +199,7 @@ class ImportTests(unittest.TestCase):
         completed = subprocess.run([sys.executable, str(ROOT / "tools/import_venues.py"), "--as-of", AS_OF.isoformat()],
                                    cwd=ROOT, capture_output=True, text=True, check=False)
         self.assertEqual(completed.returncode, 0, completed.stderr)
-        self.assertIn("11 real venue records", completed.stdout)
+        self.assertIn("29 real venue records", completed.stdout)
         self.assertIn("no database writes", completed.stdout)
 
     def test_cli_fails_safely_and_does_not_print_malformed_data(self):

@@ -1,6 +1,6 @@
 # Curated Boston venue sheet
 
-`boston-libraries.json` is a historical file name retained for compatibility. It now contains **11 real, sourced public places** across Boston: **8 BPL libraries, 2 city parks/gardens and 1 ticketed art museum**. Reviewed public venue facts and facilities come from official Boston Public Library, City of Boston or Museum of Fine Arts websites; a listing is **not** a sensory observation.
+`boston-libraries.json` is a historical file name retained for compatibility. It now contains **29 real, sourced public places** across Boston: **23 BPL libraries, 5 parks/gardens and 1 ticketed art museum**. Reviewed public venue facts and facilities come from official Boston Public Library, City of Boston or Museum of Fine Arts websites; a listing is **not** a sensory observation.
 
 Each place has publicly verifiable identity, address and source links. We store **no invented noise, crowd, brightness, scent, opening status, hours, coordinates, popularity metrics or visitor reviews**. Only facility attributes explicitly listed by sources are marked verified; absence of a listing remains unknown, not false. A public park is not necessarily quiet or uncrowded, and a museum may require a paid ticket.
 
@@ -41,3 +41,7 @@ Every venue field is explicit; extra fields are rejected, preventing invented ob
 Duplicate slugs, normalized names, normalized addresses and canonical source URLs fail the whole batch rather than silently merge. Unknown/restricted access, fixtures, missing/bad sources, invalid or partial coordinates, future source checks, stale published facts and malformed feature evidence fail closed. For stale/broken sources: set venue `provenance_status` to `needs_review`, `published` to false, and expired features to unknown/null; retain the last actual review timestamp. A live source health check is manual; this offline tool cannot detect a URL that has stopped working.
 
 UPSERT preserves existing IDs/creation dates and does not touch reports. An older batch cannot downgrade more recent venue/feature checks. Newer unknown features explicitly clear older claims. Before first database application read [database setup](../../docs/engineering/database.md). Database replay tests are supplied but were not run here.
+
+## October 24 expansion
+
+Added 15 branches from the [official BPL directory](https://bpl.bibliocommons.com/v2/locations), plus [Arnold Arboretum](https://www.boston.gov/parks/arnold-arboretum), [Jamaica Pond](https://content.boston.gov/parks/jamaica-pond) and [Back Bay Fens](https://www.boston.gov/departments/parks-and-recreation/playgrounds-and-parks-boston). Each record carries its official source. Known closed branches were not added. Sensory values remain unknown.

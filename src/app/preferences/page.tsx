@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PreferenceControls } from "../../components/preference-controls";
+import { PreferenceMatches } from "../../components/preference-matches";
+import { loadDirectory } from "../../lib/server/directory";
+import { currentAccount } from "../../lib/server/accounts";
 export const metadata: Metadata = { title: "Preferences" };
+export const dynamic = "force-dynamic";
 
-export default function PreferencesPage() {
-  return <div className="narrow"><Link className="back-link" href="/">← Explore places</Link><div className="hero"><p className="eyebrow">Your comfort, your choice</p><h1>A place for your preferences.</h1><p>There is no right or wrong setting. These optional choices stay in your browser; no account, diagnosis or device location is needed.</p><p className="small muted">Changes apply immediately. When storage is available, they are saved on this device until you reset them.</p></div><PreferenceControls /><p><Link className="button" href="/">Explore with these preferences</Link></p></div>;
+export default async function PreferencesPage() {
+  const [result, account] = await Promise.all([loadDirectory(), currentAccount()]);
+  return <div className="narrow"><Link className="back-link" href="/#places">← Explore places</Link><div className="hero"><p className="eyebrow">YOUR COMFORT, YOUR CHOICE</p><h1>What feels right?</h1><p>Choose what matters. Your suggested places update below.</p></div><PreferenceControls />{result.ok && <PreferenceMatches directory={result.value} signedIn={!!account} />}</div>;
 }

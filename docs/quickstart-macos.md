@@ -1,6 +1,6 @@
 # Run QuietSpace on macOS
 
-Use these instructions for the merged repository. **Default curated mode is read-only:** it displays 11 real sourced public places, six sensory environment options, official facility links and truthful zero-observation community states. You do **not** need PostgreSQL to open and review that version.
+Use these instructions for the merged repository. **Default curated mode includes 29 real sourced public places**, six preference choices, accounts and written reviews. Accounts and reviews use Node 24 SQLite locally; moderated sensory observations use the optional database setup below. You do **not** need PostgreSQL to open and review that version.
 
 ## 1. Install prerequisites
 
@@ -47,9 +47,9 @@ QUIETSPACE_DATA_MODE=curated REPORTS_ENABLED=false npm run dev -- --hostname 127
 Open http://127.0.0.1:3000 and verify:
 
 1. Six atmosphere choices appear: Focus & Study, Low Stimulation, Space to Yourself, Softer Lighting, Low Fragrance and Comfortable with Activity.
-2. Place-type choices show **8 libraries, 2 parks/gardens, 1 museum**; `All spaces` shows 11.
-3. Strict `Accessible entrance` returns only venues with source-verified entrance evidence, not all 11. `Listed quiet/study area` likewise requires official evidence.
-4. Visit `/community`. With no approved observations, both the report counts and review cards show truthful zero states and reporting is not offered.
+2. Place-type choices show **23 libraries, 5 parks/gardens, 1 museum**; `All spaces` shows 29.
+3. Strict `Accessible entrance` returns only venues with source-verified entrance evidence, not all 29. `Listed quiet/study area` likewise requires official evidence.
+4. Visit `/community`. Choose a place, sign in or create an account, and publish a written review. Written reviews are separate from moderator-approved sensory observations.
 5. Check both desktop and mobile widths and the venue's source links. Missing sensory levels remain unknown.
 
 ## 3. Optional: test real moderated community reports

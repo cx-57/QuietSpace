@@ -10,6 +10,10 @@ import { discover } from "../src/lib/discovery.ts";
 const now = new Date("2026-10-22T18:00:00Z");
 const id = "10000000-0000-4000-8000-000000000001";
 const preferences: Preferences = { ...DEFAULT_PREFERENCES, maximumIntensities: { noise: 2, crowds: 3, brightness: 3, scent: 2 } };
+test("saved preferences discard retired facility filters so hidden options cannot hide every place", () => {
+  const restored = decodePreferences(JSON.stringify({ ...preferences, requiredFeatures: ["step_free_access", "accessible_toilet", "seating"] }));
+  assert.deepEqual(restored?.requiredFeatures, ["seating"]);
+});
 const reports = (ratings: Intensities = { noise: 2, crowds: 2, brightness: 3, scent: 1 }, count = 3): ApprovedReport[] => Array.from({ length: count }, (_, i) => ({
   id: `20000000-0000-4000-8000-${String(i).padStart(12, "0")}`, spaceId: id,
   intensities: { ...ratings }, observedAt: `2026-10-${20 + i % 2}T12:00:00Z`, createdAt: "2026-10-22T16:00:00Z", status: "approved", isFixture: false,

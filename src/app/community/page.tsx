@@ -1,53 +1,17 @@
 import Link from "next/link";
-import type { Metadata } from "next";
 import { loadDirectory } from "../../lib/server/directory";
-import { reportConfig } from "../../lib/server/reports";
-import { communityStats } from "../../lib/community";
-import { Icon } from "../../components/icon";
+import { currentAccount, communityStore } from "../../lib/server/accounts";
+import { ReviewList } from "../../components/visitor-reviews";
 
-export const metadata: Metadata = { title: "Community" };
+export const metadata = { title: "Community" };
 export const dynamic = "force-dynamic";
-
 export default async function CommunityPage() {
-  const result = await loadDirectory();
-  if (!result.ok) return <div className="prose"><h1>Community information unavailable</h1><p role="status">{result.error.message}</p><Link href="/">Return to discovery</Link></div>;
-  const directory = result.value;
-  const stats = communityStats(directory, new Date(directory.asOf));
-  const reporting = directory.mode !== "curated" && reportConfig() !== null;
+  const [result, account] = await Promise.all([loadDirectory(), currentAccount()]);
+  if (!result.ok) return <div className="prose"><h1>Community unavailable</h1><p>{result.error.message}</p><Link href="/">Explore places</Link></div>;
+  const reviews = communityStore().reviews();
   return <div className="community-page">
-    <section className="community-hero">
-      <p className="eyebrow">A COMMUNITY GUIDE, BUILT TOGETHER</p>
-      <h1>Help your neighbors find <em>a little more room.</em></h1>
-      <p>QuietSpace starts with officially sourced public places. Firsthand observations can add the sensory details that ordinary listings leave out—but only after moderation.</p>
-      <div className="hero-actions"><a href="#places-to-help" className="button">See places needing observations <Icon name="arrow" /></a><Link href="/#places" className="quiet-link">Explore the guide</Link></div>
-    </section>
-    <section className="community-stats" aria-label="Actual directory participation">
-      <div><strong>{stats.venueCount}</strong><span>Source-reviewed public places</span></div>
-      <div><strong>{stats.approvedCount}</strong><span>Approved recent observations</span></div>
-      <div><strong>{stats.reviewedVenueCount}</strong><span>Places with community observations</span></div>
-    </section>
-    <section className="panel" aria-labelledby="community-flow-heading">
-      <p className="eyebrow">THREE STEPS, ONE SHARED GUIDE</p><h2 id="community-flow-heading">How neighbors can help</h2>
-      <div className="community-steps">
-        <div><span>01</span><h3>Visit a real place</h3><p>Use the official venue link to check availability and plan your visit. A listed quiet/study room does not establish current noise levels.</p></div>
-        <div><span>02</span><h3>Share what you noticed</h3><p>Report any noise, crowd, brightness or scent intensity you actually observed during a visit. Leave unknowns blank.</p></div>
-        <div><span>03</span><h3>Build trusted evidence</h3><p>A moderator checks submissions before they appear as anonymous community reviews or contribute to matching.</p></div>
-      </div>
-    </section>
-    <section id="places-to-help" className="community-places" aria-labelledby="places-to-help-heading">
-      <div className="section-heading"><div><p className="eyebrow">WHERE LOCAL KNOWLEDGE IS MISSING</p><h2 id="places-to-help-heading">Places that need <em>your perspective.</em></h2></div></div>
-      {!reporting && <p className="notice" role="status">Community submissions are not enabled on this deployment. You can browse the verified venues below; this guide does not collect reviews until secure reporting is configured.</p>}
-      <div className="community-place-list">
-        {stats.needsObservations.map(({space,approved}) => <div key={space.id} className="community-place-row">
-          <div><h3><Link href={`/spaces/${space.slug}`}>{space.name.replace("Boston Public Library — ", "")}</Link></h3><p>{space.address}</p><span>{approved === 0 ? "No approved observations yet" : `${approved} approved recent observation${approved === 1 ? "" : "s"}`}</span></div>
-          {reporting ? <Link className="button secondary" href={`/spaces/${space.slug}/report`}>Share a visit</Link> : <Link className="button secondary" href={`/spaces/${space.slug}`}>View venue</Link>}
-        </div>)}
-      </div>
-    </section>
-    <section className="community-suggest" aria-labelledby="suggest-heading">
-      <div><p className="eyebrow">KNOW A PLACE WE MISSED?</p><h2 id="suggest-heading">Nominate a neighborhood space.</h2><p>Suggest a public library, community center, park or museum that should be reviewed next. Please include an official source and do not include private or medical information.</p><p className="small muted">Suggestions use a public GitHub issue and require a GitHub account; your GitHub username will be visible. The repository must be public for visitors to use this form. A suggestion is not added to the guide until independently verified. <a href="https://github.com/cx-57/QuietSpace/blob/main/CONTRIBUTING.md">Read the contribution guidelines</a>.</p></div>
-      <a className="button secondary" href="https://github.com/cx-57/QuietSpace/issues/new?template=suggest-place.yml" rel="noopener noreferrer">Suggest a public space <Icon name="external" size={16} /></a>
-    </section>
-    <p className="small muted">Have feedback on finding places or accessibility? <a href="https://github.com/cx-57/QuietSpace/issues/new?template=community-feedback.yml">Suggest a product improvement on GitHub</a> (account and public issue required). No names or testimonials are invented. Counts reflect only currently approved, eligible reports. <Link href="/privacy">How contributions are handled</Link>.</p>
+    <section className="community-hero"><p className="eyebrow">FROM ONE NEIGHBOR TO ANOTHER</p><h1>Been there?<br /><em>Share a little.</em></h1><p>Help someone plan their next visit. Pick a place and write a review.</p><div className="actions"><a className="button" href="#write-review">Write a review</a>{!account && <Link href="/account">Sign in or create account</Link>}</div></section>
+    <section aria-labelledby="recent-reviews-title"><div className="section-heading"><h2 id="recent-reviews-title">Recent reviews <em>({reviews.length})</em></h2></div><ReviewList reviews={reviews} viewerId={account?.id} showPlace /></section>
+    <section id="write-review" className="community-places" aria-labelledby="write-review-title"><div className="section-heading"><h2 id="write-review-title">Where did you visit?</h2></div><div className="community-place-list">{result.value.spaces.map(space => <div key={space.id} className="community-place-row"><div><h3><Link href={`/spaces/${space.slug}`}>{space.name.replace("Boston Public Library — ", "")}</Link></h3><p>{space.address}</p></div><Link className="button secondary" href={`/spaces/${space.slug}/review`}>Write a review</Link></div>)}</div></section>
   </div>;
 }

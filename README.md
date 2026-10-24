@@ -2,40 +2,32 @@
 
 Find a place that feels right. A calm neighborhood guide to public places, with private sensory preferences, source-reviewed facilities and moderated observations.
 
-The app includes discovery, strict access filters, local preference persistence, explainable matching, venue details, real PostgreSQL report submission, operator moderation, evidence reliability and historical periods. **Community** includes an evidence-based participation dashboard, structured approved sensory reviews (not fake testimonials), places awaiting observations, and public GitHub templates for proposing venues and providing usability feedback. With a low-noise preference (1–2/5), default suggested ordering prioritizes fresh, source-listed quiet/study spaces among unscored venues. This is a **facility signal, never a noise measurement or fit score**; numeric matches still require sufficient approved reports. The curated directory now covers **11 real Boston places: eight public libraries, two parks/gardens, and one museum**. Visitors can choose six sensory starting points, filter by place type, require source-verified facilities, and fine-tune noise, crowds, brightness and scent individually. Presets describe **user preferences**, not verified sensory attributes of venues. Their unknown sensory conditions remain unknown; no community observations were invented for these venues.
+The directory includes **29 Boston places: 23 libraries, five parks and one museum**. Search by place or neighborhood, choose preferences for instant suggestions, and open a place to plan a visit or write a review.
 
-## Quick start on macOS
+## Run locally
 
-See **[Mac quickstart and final-run checklist](docs/quickstart-macos.md)** for curated read-only mode, Python 3, Chromium, optional local PostgreSQL, moderated report checks and the updated demo. You do not need a database to review the initial guide.
+Use Node.js 24 and npm:
 
-## Run the complete local app
-
-Node 24, npm, Python 3.11+, and PostgreSQL tools are required. On this machine PostgreSQL is installed under `C:/Program Files/PostgreSQL/18/bin`; set `PG_BIN` if yours is elsewhere.
-
-```powershell
+```bash
 npm ci
-npm run setup:local
 npm run dev -- --hostname 127.0.0.1 --port 3000
 ```
 
-Open **[http://localhost:3000](http://localhost:3000)**. Setup creates a dedicated loopback PostgreSQL cluster on port 55432, applies migrations, imports the currently reviewed sourced venues and writes an ignored `.env.local` with restricted application credentials. It preserves an existing custom env file. The development cluster uses loopback trust authentication; never expose or deploy it.
+Open [localhost:3000](http://localhost:3000). No PostgreSQL setup is required for browsing, accounts, saved preferences or written reviews.
 
-With no configuration, the app instead offers the sourced Boston places as a clearly labeled **read-only curated guide**. Community reviews show an honest zero state, and the submission CTA is hidden when reporting is disabled. The five verified quiet/study facilities are present in the curated dataset; for a connected database, rerun the reviewed venue importer and apply its SQL (see [database setup](docs/engineering/database.md)) so source-backed quiet results also appear there. Choose `QUIETSPACE_DATA_MODE=postgres` for direct role-constrained transactions or `supabase` for the existing REST adapter. A connected-service failure never silently substitutes local data.
+## Accounts and reviews
 
-## Browse different environments
+Create an account at `/account` with a username, display name and a password of at least 12 characters. Passwords are salted and hashed; sessions use HTTP-only cookies. Account data, saved preferences and written reviews persist in `artifacts/community/community.sqlite` (ignored by Git). Set `QUIETSPACE_STORAGE_DIR` to an absolute persistent directory when running a server elsewhere. Back up that directory to preserve accounts and reviews. This SQLite setup is for one server with durable disk; it is not shared storage for ephemeral or multiple server instances. Email-based recovery is not implemented.
 
-The homepage now offers **Focus & study**, **Low stimulation**, **Space to yourself**, **Softer lighting**, **Low fragrance**, and **Comfortable with activity** as six optional starting points. The four individual intensity controls and strict verified-facility requirements remain available. Presets never erase facility requirements, and selecting a preset twice clears only its sensory levels. Venue-type controls cover the categories actually in the sourced directory. The museum may require admission; official links give visit requirements.
+Choose a place from `/community` or click **Write a review** on any place. Signed-in visitors can publish overall stars, optional quietness/personal-space/soft-lighting/low-fragrance stars and text, then delete their own review. Each attribute has its own average and count over reviews posted in the last 60 days. Unrated attributes are excluded; deleting a review recalculates the averages. Written reviews are labeled unverified visitor experiences and do not become moderator-approved sensory observations. Preferences save automatically in the browser; **Save to my account** also stores them on the server and restores them on sign-in.
 
-These choices do **not** predict real noise, crowds, scents or brightness where community evidence is absent. Only a low-noise preference has an official facility-only fallback: verified quiet/study areas are prioritized among unscored locations. Other preferences result in explicitly unknown sensory ratings and category/facility browsing until legitimate moderated reports are available.
+## Suggestions
 
-## Community participation
+Sensory presets prioritize actual visitor attribute averages when available, with category/facility suggestions as a fallback. Five attribute stars mean quieter, more personal space, softer/dimmer lighting or less fragrance; matching converts these to the intensity scale used by preferences. Brightness is compared to the preferred level; noise, crowds and scent are compared to the preferred maximum. Overall satisfaction stars are never used as a sensory measurement. Each card explains the recommendation, and partial ratings are labeled. These are recommendations to explore, not measurements of current noise, crowding, lighting or scent. Required facilities still exclude unverified locations. Numeric sensory scores retain the evidence requirements of the existing scoring system.
 
-Read the [community contribution guidelines](CONTRIBUTING.md) for trustworthy source requirements, moderated sensory check-ins, public GitHub feedback and privacy expectations.
+## Optional moderated sensory observations
 
-- The `/community` route gives real counts of eligible approved observations, shows places that need firsthand reports, and links to public GitHub issue templates for suggesting new venues and improving the product. GitHub suggestions require the repository to be **public**, and users must sign in; issues and usernames are public.
-- Venues display up to six structured **approved** community sensory check-ins. There are no star ratings, free-text testimonials, accounts or synthetic public reviews. The page rounds visit dates to the month; **approved exact timestamps remain available in the public data** used for scoring, as disclosed on the privacy page.
-- Community report submission requires connected PostgreSQL/Supabase, trusted overwritten IP headers, a configured HTTPS origin, rate-limiting credentials and an operating moderator. Curated read-only mode never silently accepts data.
-- Before enabling public submissions, verify production ingress, cleanup, RLS, moderation and data-retention requirements in [reporting setup](docs/engineering/reporting.md). Running the site in curated mode remains the safe fallback.
+The existing PostgreSQL/Supabase adapters, structured-report validation and moderation tools remain available. See [database setup](docs/engineering/database.md) and [reporting setup](docs/engineering/reporting.md). `REPORTS_ENABLED` controls this separate structured observation pipeline; it does not disable account-based written reviews.
 
 ## Moderate observations
 

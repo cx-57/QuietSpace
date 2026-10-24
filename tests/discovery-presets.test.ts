@@ -3,10 +3,24 @@ import test from "node:test";
 import { activePresetId, DISCOVERY_PRESETS, selectPreset } from "../src/lib/discovery-presets.ts";
 import { DEFAULT_PREFERENCES } from "../src/lib/preferences.ts";
 import { discover } from "../src/lib/discovery.ts";
+import { recommendation } from "../src/lib/recommendations.ts";
 import { UNKNOWN_FACILITY } from "../src/lib/public-data.ts";
 import type { Preferences, PublicSpace } from "../src/lib/contracts.ts";
 
 const now = new Date("2026-10-23T22:00:00Z");
+test("every preference profile offers explained starting points without invented sensory scores", () => {
+  const spaces = [sample("library", "library"), sample("park", "park"), sample("museum", "museum"), sample("community", "community_centre")];
+  for (const preset of DISCOVERY_PRESETS) {
+    const preferences = selectPreset(DEFAULT_PREFERENCES, preset.id);
+    const suggestions = spaces.filter(s => recommendation(s, preferences, now).priority > 0);
+    assert.ok(suggestions.length > 0, preset.id);
+    assert.ok(suggestions.length < spaces.length, preset.id);
+    for (const space of suggestions) {
+      assert.ok(recommendation(space, preferences, now).reason.length > 0);
+      assert.equal(discover([space], preferences, "", "match", now)[0].match.score, null);
+    }
+  }
+});
 function sample(id: string, category: PublicSpace["category"]): PublicSpace {
   return {
     id, slug: id, name: `SAMPLE ${id}`, address: "SAMPLE, Boston, MA",

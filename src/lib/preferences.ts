@@ -2,6 +2,8 @@ import { DIMENSIONS, FEATURE_KEYS } from "./contracts.ts";
 import type { Preferences, FacilityEvidence, FeatureKey } from "./contracts.ts";
 import { effectiveFacility } from "./validation.ts";
 
+export const PREFERENCE_FEATURE_KEYS: readonly FeatureKey[] = ["accessible_entrance", "seating", "quiet_room"];
+
 export const STORAGE_KEY = "quietspace.preferences.v1";
 export const DEFAULT_PREFERENCES: Preferences = {
   version: 1,
@@ -24,7 +26,7 @@ export function parsePreferences(value: unknown): Preferences | null {
   if (Object.keys(intensities).length !== 4 || !DIMENSIONS.every(d => Object.hasOwn(intensities, d) &&
       (intensities[d] === null || (Number.isInteger(intensities[d]) && Number(intensities[d]) >= 1 && Number(intensities[d]) <= 5)))) return null;
   if (!p.requiredFeatures.every(f => FEATURE_KEYS.includes(f)) || new Set(p.requiredFeatures).size !== p.requiredFeatures.length) return null;
-  return { version: 1, maximumIntensities: { ...intensities } as Preferences["maximumIntensities"], requiredFeatures: [...p.requiredFeatures] };
+  return { version: 1, maximumIntensities: { ...intensities } as Preferences["maximumIntensities"], requiredFeatures: p.requiredFeatures.filter(f => PREFERENCE_FEATURE_KEYS.includes(f)) };
 }
 
 export function decodePreferences(raw: string | null): Preferences | null {

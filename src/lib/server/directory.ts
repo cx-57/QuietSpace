@@ -4,6 +4,7 @@ import { FEATURE_KEYS } from "../contracts.ts";
 import type { Directory, Result } from "../contracts.ts";
 import { adaptFacility, adaptReport, adaptSpace, object, SLUG_PATTERN, UUID_PATTERN } from "../public-data.ts";
 import { loadPostgresDirectory } from "./postgres.ts";
+import { communityStore } from "./accounts.ts";
 
 export function publicConfig(): { url: string; key: string } | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -30,6 +31,15 @@ async function readRows(config: { url: string; key: string }, table: string, que
 }
 
 export async function loadDirectory(now = new Date(), identifier?: string): Promise<Result<Directory>> {
+  const result = await loadSourceDirectory(now, identifier);
+  if (result.ok) {
+    const summaries = communityStore().ratingSummaries(now);
+    for (const space of result.value.spaces) space.visitorRatings = summaries[space.slug];
+  }
+  return result;
+}
+
+async function loadSourceDirectory(now = new Date(), identifier?: string): Promise<Result<Directory>> {
   try {
     const mode = process.env.QUIETSPACE_DATA_MODE ?? "curated";
     if (identifier && !(UUID_PATTERN.test(identifier) || (identifier.length <= 120 && SLUG_PATTERN.test(identifier)))) return { ok: false, error: { code: "not_found", message: "Venue not found." } };
