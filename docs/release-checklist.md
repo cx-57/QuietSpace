@@ -1,6 +1,6 @@
 # QuietSpace release candidate
 
-Updated October 23, 2026. This is a tested local application and a prepared production package. No hosted URL or Devpost submission has been created.
+Updated October 23, 2026. This is a previously locally tested application and a prepared production package. Recent quiet-first and Community changes have been committed to the repository, but **the modified branch has not passed new automated tests** because GitHub-hosted jobs are currently failing before a runner starts. The earlier October 23 main-branch browser failure was traced to the preference persistence portion of the browser-to-PostgreSQL test; hydration readiness and a persistence assertion have been added, but still need execution. No public deployment or Devpost submission has been verified.
 
 ## Verified locally
 
@@ -48,6 +48,16 @@ Compose publishes only the application on loopback; the database has no public p
 Choose either direct PostgreSQL (`QUIETSPACE_DATA_MODE=postgres`) or the existing Supabase REST adapter. Direct PostgreSQL requires a non-superuser NOINHERIT login with SET membership in `anon` and `service_role`, all three migrations, verified TLS/database networking and a protected operator account. Public reads run `SET LOCAL ROLE anon` inside read-only transactions; writes use only the pending RPC as `service_role`. The long-running PostgreSQL application purges expired abuse records on startup and hourly. Serverless/Supabase deployments need an external scheduler, as described in [reporting](engineering/reporting.md).
 
 Keep public reporting disabled until the deployed canonical HTTPS Origin, overwritten trusted IP header, direct-origin access restrictions, backups and cleanup monitoring are verified. The [nginx example](../deploy/nginx.conf) shows body limits and an overwritten IP header; adapt it inside a TLS-enabled virtual host for the actual domain. Its loopback HTTP server is an example, not a complete TLS deployment. Hosting credentials/domain were not available here, so no cloud service was modified.
+
+## QuietSpace / Community launch-specific acceptance
+
+1. Check the one-click quiet action on desktop and mobile; verify Central/Bates Hall and East Boston receive facility-only priority at noise preferences 1–2 without a fabricated sensory fit number.
+2. Apply the current reviewed venue import SQL to any **already-existing connected database** before testing the quiet-study source signal. Updating JSON alone does not update production PostgreSQL or Supabase rows. Verify both quiet_room records are visible through anonymous RLS reads.
+3. Visit `/community`: confirm counts begin at 0 without real approved reports; a pending or rejected report must not appear in the community review cards or participation statistics.
+4. Enable reporting only after ingress protection, exact origin, rate limiting and cleanup are verified. Submit a legitimate observation to one real space, approve it as a trusted operator, and confirm it appears on the venue and community page without a fake testimonial. Check rejection withdraws it immediately.
+5. Make the repository public after a full secret/license audit so the GitHub issue templates for **Suggest a public space** and **Community feedback** work for residents. Both require GitHub sign-in and create public issues.
+6. Record a **new** demo covering quiet-first discovery and the Community route; the earlier video predates these changes. Disclose the synthetic test database whenever showing populated sample reviews.
+7. Run `npm run check`, Python unittest, real database tests, browser E2E and `npm run check:release` after any change. Current GitHub Actions outcomes do not certify the updated tree.
 
 ## Deployed acceptance still required
 
