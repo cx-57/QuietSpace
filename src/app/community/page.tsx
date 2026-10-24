@@ -45,9 +45,9 @@ export default async function CommunityPage() {
       </div>
     </section>
     <section className="community-suggest" aria-labelledby="suggest-heading">
-      <div><p className="eyebrow">KNOW A PLACE WE MISSED?</p><h2 id="suggest-heading">Nominate a neighborhood space.</h2><p>Suggest a public library, community center, park or museum that should be reviewed next. Please include an official source and do not include private or medical information.</p><p className="small muted">Suggestions use a public GitHub issue and require a GitHub account. A suggestion is not added to the guide until it is independently verified.</p></div>
+      <div><p className="eyebrow">KNOW A PLACE WE MISSED?</p><h2 id="suggest-heading">Nominate a neighborhood space.</h2><p>Suggest a public library, community center, park or museum that should be reviewed next. Please include an official source and do not include private or medical information.</p><p className="small muted">Suggestions use a public GitHub issue and require a GitHub account; your GitHub username will be visible. The repository must be public for visitors to use this form. A suggestion is not added to the guide until independently verified.</p></div>
       <a className="button secondary" href="https://github.com/cx-57/QuietSpace/issues/new?template=suggest-place.yml" rel="noopener noreferrer">Suggest a public space <Icon name="external" size={16} /></a>
     </section>
-    <p className="small muted">No names or user testimonials are invented. Counts reflect only currently approved, eligible reports. <Link href="/privacy">How contributions are handled</Link>.</p>
+    <p className="small muted">Have feedback on finding places or accessibility? <a href="https://github.com/cx-57/QuietSpace/issues/new?template=community-feedback.yml">Suggest a product improvement on GitHub</a> (account and public issue required). No names or testimonials are invented. Counts reflect only currently approved, eligible reports. <Link href="/privacy">How contributions are handled</Link>.</p>
   </div>;
 }
