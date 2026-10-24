@@ -31,7 +31,7 @@ test("preferences persist through reload and details; search, strict filters and
 
 test("quiet-seeking users get documented study options before unverified places", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Focus & study" }).click();
+  await page.getByRole("button", { name: /Focus & study/ }).click();
   await expect(page.getByText(/Low-noise preference: officially listed study areas appear ahead/)).toBeVisible();
   await expect(page.getByRole("button", { name: /Focus & study/ })).toHaveAttribute("aria-pressed", "true");
   const cards = page.locator(".space-card");
