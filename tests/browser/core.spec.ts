@@ -29,6 +29,20 @@ test("preferences persist through reload and details; search, strict filters and
   expect(await page.evaluate(() => localStorage.getItem("quietspace.preferences.v1"))).toBeNull();
 });
 
+test("quiet-seeking users get documented study options before unverified places", async ({ page }) => {
+  await page.goto("/preferences");
+  await page.getByLabel("Noise", { exact: true }).selectOption("1");
+  await page.getByRole("link", { name: "Explore with these preferences" }).click();
+  await expect(page.getByText(/Quiet preference active: source-listed quiet\/study spaces appear first/)).toBeVisible();
+  const cards = page.locator(".space-card");
+  await expect(cards).toHaveCount(5);
+  await expect(cards.nth(0).getByText("Documented study space")).toBeVisible();
+  await expect(cards.nth(1).getByText("Documented study space")).toBeVisible();
+  await expect(cards.nth(0).getByText(/Current noise unknown/)).toBeVisible();
+  await page.getByLabel("Sort by").selectOption("name");
+  await expect(page.getByText(/Quiet preference active; sorting by name/)).toBeVisible();
+});
+
 test("malformed saved preferences recover, and disabled storage keeps session preferences", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("quietspace.preferences.v1", "broken"));
   await page.goto("/preferences");
