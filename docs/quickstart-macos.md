@@ -90,7 +90,8 @@ After building and preparing `quietspace_browser_test`, this records a captioned
 ## 5. Outstanding publishing steps
 
 - GitHub Actions currently fails before runners start. These commands are the replacement executable verification until CI access is repaired; do **not** claim a green CI run until it exists.
-- Vercel workspace authorization is blocked. A live URL has **not** been verified.
+- Vercel workspace authorization is blocked in the current connector. A live URL has **not** been verified. For manual dashboard deployment, go to [Vercel New Project](https://vercel.com/new), import `cx-57/QuietSpace` from GitHub (grant Vercel repository access if required), use **Next.js**, repo root, production branch `main`, and choose **read-only** environment variables `QUIETSPACE_DATA_MODE=curated` and `REPORTS_ENABLED=false`. Do not add production database secrets until reporting ingress/RLS/cleanup are verified. Check the resulting URL on desktop and phone.
+- Verify the final live version's actual URL, basic routes (`/`, `/community`, `/spaces/bpl-central`, `/privacy`), and security/error states before linking it publicly.
 - The repository is still private. Check secrets, license notices and commit history before making it public; public GitHub issue templates require public visibility and a GitHub login.
 - Production report collection must remain **off** until HTTPS origin, ingress IP trust, RLS, rate limits, operator moderation and cleanup have been verified. See `docs/engineering/reporting.md`.
 - The Neighborhood Hacks submission and demo upload are manual account actions and remain unverified.
