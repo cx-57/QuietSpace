@@ -39,7 +39,7 @@ export function Discover({ directory }: { directory: Directory }) {
       </div>
     </aside><section aria-labelledby="results-heading" className="results">
       <div className="search-row"><div className="field search-field"><label htmlFor="search">Place name or area</label><div className="search-input"><Icon name="search" /><input id="search" type="search" placeholder="A neighborhood, a library, a little room…" maxLength={200} value={query} onChange={e => setQuery(e.target.value)} /></div></div>
-        <div className="field"><label htmlFor="sort">Sort by</label><select id="sort" value={sort} onChange={e => setSort(e.target.value as "name" | "match")}><option value="match">Suggested for you</option><option value="name">Name</option></select></div></div>
+        <div className="field"><label htmlFor="sort">Sort by</label><select id="sort" value={sort} onChange={e => setSort(e.target.value as "name" | "match")}><option value="match">Available evidence first</option><option value="name">Name</option></select></div></div>
       <p className="directory-note" role="status">{DIMENSIONS.some(d => preferences.maximumIntensities[d] !== null)
         ? "Your atmosphere choices are active. Where there aren't enough real observations, sensory conditions remain unknown; preference selections do not create ratings."
         : "Choose a sensory profile or fine-tune individual senses above. Source-verified facilities help narrow the options while community evidence grows."}</p>
