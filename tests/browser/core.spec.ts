@@ -43,6 +43,20 @@ test("quiet-seeking users get documented study options before unverified places"
   await expect(page.getByText(/Quiet preference active; sorting by name/)).toBeVisible();
 });
 
+test("quiet first-use and community hub show genuine participation without fake reviews", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Find a quiet study space" }).click();
+  await expect(page.getByRole("button", { name: "Quiet preference on · Clear" })).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("link", { name: "Community", exact: true }).first().click();
+  await expect(page.getByRole("heading", { name: /Help your neighbors find/ })).toBeVisible();
+  await expect(page.getByText(/Community submissions are not enabled/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Suggest a public space" })).toHaveAttribute("href", /suggest-place\.yml/);
+  await page.getByRole("link", { name: "View venue" }).first().click();
+  await expect(page.getByRole("heading", { name: "Community reviews" })).toBeVisible();
+  await expect(page.getByText("No approved community reviews yet.")).toBeVisible();
+  await expect(page.getByRole("link", { name: "How community reviews work" })).toBeVisible();
+});
+
 test("malformed saved preferences recover, and disabled storage keeps session preferences", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("quietspace.preferences.v1", "broken"));
   await page.goto("/preferences");
@@ -69,7 +83,7 @@ test("keyboard skip link, 320px layouts and automated accessibility on core rout
   await expect(page.getByRole("link", { name: "Skip to content" })).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
-  for (const route of ["/", "/preferences", "/spaces/bpl-brighton", "/spaces/bpl-brighton/report", "/spaces/does-not-exist", "/about", "/privacy", "/credits"]) {
+  for (const route of ["/", "/preferences", "/spaces/bpl-brighton", "/spaces/bpl-brighton/report", "/spaces/does-not-exist", "/community", "/about", "/privacy", "/credits"]) {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.goto(route);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
