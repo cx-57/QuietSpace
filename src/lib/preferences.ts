@@ -11,7 +11,7 @@ export const DEFAULT_PREFERENCES: Preferences = {
 export const DIMENSION_LABELS = { noise: "Noise", crowds: "Crowds", brightness: "Brightness", scent: "Scent" };
 export const FEATURE_LABELS: Record<FeatureKey, string> = {
   accessible_entrance: "Accessible entrance", step_free_access: "Step-free access",
-  accessible_toilet: "Accessible toilet", seating: "Seating", quiet_room: "Quiet room",
+  accessible_toilet: "Accessible toilet", seating: "Seating", quiet_room: "Quiet/study space",
 };
 
 export function parsePreferences(value: unknown): Preferences | null {
