@@ -24,7 +24,7 @@ export function SpaceDetail({ space, asOf }: { space: PublicSpace; asOf: string 
       <Link href="/preferences">Adjust your preferences</Link>
     </section><section className="panel" aria-labelledby="evidence-heading"><p className="eyebrow">Evidence, separately</p><h2 id="evidence-heading">What we know so far</h2>
       <ConfidenceLabel evidence={evidence} />
-      <p>{evidence.approvedRecentCount ? `${evidence.distinctObservationDates} distinct observation dates in the venue’s time zone.` : "No recent approved observations are available. A library listing does not establish quietness."}</p>
+      <p>{evidence.approvedRecentCount ? `${evidence.distinctObservationDates} distinct observation dates in the venue’s time zone.` : "No recent approved observations are available. An official venue listing does not establish current sensory conditions."}</p>
       {evidence.latestObservedAt && <p>Latest eligible visit: <SourceDate value={evidence.latestObservedAt} />.</p>}
       <p className="small muted">Only approved, non-sample visits from the last 60 days count. Fit and evidence volume are separate; neither guarantees your experience.</p>
     </section></div>
