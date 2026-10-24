@@ -6,13 +6,13 @@ Reviewed 2026-10-20 through the official location pages. Kept only names, public
 
 | Venue | Official evidence | Review limits |
 | --- | --- | --- |
-| Central | [Location and Facilities](https://www.bpl.org/locations/central/) | Address: 700 Boylston Street. Entrance evidence only. |
+| Central | [Location and Facilities](https://www.bpl.org/locations/central/) | Address: 700 Boylston Street. Entrance evidence and separately sourced Bates Hall study-space evidence. |
 | Brighton | [Location and Facilities](https://www.bpl.org/locations/brighton/) | Address: 40 Academy Hill Road. Entrance evidence only. |
 | Connolly | [Location and Facilities](https://www.bpl.org/locations/connolly/) | Address: 433 Centre Street. Page retained a past October 15 closure notice; no opening promise imported. |
-| East Boston | [Location and Facilities](https://www.bpl.org/locations/east-boston/) | Address: 365 Bremen Street. Canonical page rechecked after older numeric alias cache. “Quiet/study” label does not prove quietness. |
+| East Boston | [Location and Facilities](https://www.bpl.org/locations/east-boston/) | Address: 365 Bremen Street. Official quiet/study room(s) listing; no measured noise. |
 | South Boston | [Location and Facilities](https://www.bpl.org/locations/south-boston/) | Address: 646 East Broadway. Events listed; no sensory inference. |
 
-The pages identify these as public-library locations and list accessible entrance facilities. This is not evidence of accessible toilets, a step-free internal route, available seating, room reservation rights, current opening, scent levels, light intensity or crowd/noise conditions. Unknown facilities omitted from JSON expand into explicit null rows in SQL.
+The pages identify these as public-library locations and list accessible entrance facilities. Separate source reviews on October 23 verified **Bates Hall at Central Library** as a quiet-study reading room ([official description](https://www.bpl.org/central-library-points-of-interest/)) and **East Boston** as listing quiet/study rooms ([official facility list](https://www.bpl.org/locations/east-boston/)). The existing `quiet_room` key is labeled `Quiet/study space` in the UI: it denotes a source-listed quiet-use facility, not an enclosed silent room or a sensory reading. When someone selects a low noise preference (1–2), fresh verified study-space evidence prioritizes otherwise unscored venues. Missing listings stay unknown, and **no sensory intensity or matching score is generated** by this fallback. This is not evidence of accessible toilets, a step-free internal route, available seating, room reservation rights, current opening, scent levels, light intensity or crowd/noise conditions. Unknown facilities omitted from JSON expand into explicit null rows in SQL.
 
 No bulk harvesting is implemented. This is a hand-curated factual inventory with attribution. The linked [BiblioCommons terms](https://bpl.bibliocommons.com/info/terms) were inspected on 2026-10-20: they address linking, content rights and limits on automated harvesting. This is not a claim of a broad reuse license; no catalog entries, user contributions, photographs or descriptive prose are republished. Source links accompany the factual records. No endorsement is implied.
 
