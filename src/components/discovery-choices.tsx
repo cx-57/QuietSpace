@@ -47,10 +47,12 @@ export function DiscoveryChoices({ directory, category, onCategoryChange }: {
       </fieldset>
       <fieldset className="verified-choices"><legend>Require source-verified facilities</legend>
         <div className="verified-checks">
-          <label><input type="checkbox" disabled={!ready} checked={preferences.requiredFeatures.includes("accessible_entrance")}
-            onChange={() => toggleFacility("accessible_entrance")} /> Accessible entrance</label>
-          <label><input type="checkbox" disabled={!ready} checked={preferences.requiredFeatures.includes("quiet_room")}
-            onChange={() => toggleFacility("quiet_room")} /> Listed quiet/study area</label>
+          <button type="button" className="choice-pill" disabled={!ready}
+            aria-pressed={preferences.requiredFeatures.includes("accessible_entrance")}
+            onClick={() => toggleFacility("accessible_entrance")}>Accessible entrance</button>
+          <button type="button" className="choice-pill" disabled={!ready}
+            aria-pressed={preferences.requiredFeatures.includes("quiet_room")}
+            onClick={() => toggleFacility("quiet_room")}>Listed quiet/study area</button>
         </div>
         <p className="small muted">Strict requirements hide places where the facility is unverified. An accessible entrance does not certify whole-site access.</p>
       </fieldset>
