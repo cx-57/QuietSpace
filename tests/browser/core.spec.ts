@@ -3,7 +3,7 @@ import AxeBuilder from "@axe-core/playwright";
 
 test("preferences persist through reload and details; search, strict filters and reset work", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("article")).toHaveCount(5);
+  await expect(page.getByRole("article")).toHaveCount(11);
   await page.getByLabel("Place name or area").fill("Brighton");
   await expect(page.getByRole("article")).toHaveCount(1);
   await page.getByRole("link", { name: "Edit sensory preferences" }).click();
@@ -16,7 +16,7 @@ test("preferences persist through reload and details; search, strict filters and
   await expect(page.getByText("No places meet these filters")).toBeVisible();
   await page.getByRole("checkbox", { name: "Step-free access" }).uncheck();
   await page.getByRole("checkbox", { name: "Accessible entrance" }).check();
-  await expect(page.getByRole("article")).toHaveCount(5);
+  await expect(page.getByRole("article")).toHaveCount(8);
   await page.getByRole("link", { name: "Brighton Branch", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Brighton Branch");
   await expect(page.getByText("Not enough evidence for a match", { exact: true })).toBeVisible();
@@ -31,22 +31,22 @@ test("preferences persist through reload and details; search, strict filters and
 
 test("quiet-seeking users get documented study options before unverified places", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Find quiet study spaces" }).click();
-  await expect(page.getByText(/Quiet preference active: source-listed quiet\/study spaces appear first/)).toBeVisible();
-  await expect(page.getByRole("button", { name: "Quiet preference on · Clear" })).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Focus & study" }).click();
+  await expect(page.getByText(/Low-noise preference: officially listed study areas appear ahead/)).toBeVisible();
+  await expect(page.getByRole("button", { name: /Focus & study/ })).toHaveAttribute("aria-pressed", "true");
   const cards = page.locator(".space-card");
-  await expect(cards).toHaveCount(5);
+  await expect(cards).toHaveCount(11);
   await expect(cards.nth(0).getByText("Documented study space")).toBeVisible();
   await expect(cards.nth(1).getByText("Documented study space")).toBeVisible();
   await expect(cards.nth(0).getByText(/Current noise unknown/)).toBeVisible();
   await page.getByLabel("Sort by").selectOption("name");
-  await expect(page.getByText(/Quiet preference active; sorting by name/)).toBeVisible();
+  await expect(page.getByText(/Low-noise preference selected; sorting by name/)).toBeVisible();
 });
 
 test("quiet first-use and community hub show genuine participation without fake reviews", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Find a quiet study space" }).click();
-  await expect(page.getByRole("button", { name: "Quiet preference on · Clear" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: /Space to yourself/ })).toHaveAttribute("aria-pressed", "false");
   await page.getByRole("link", { name: "Community", exact: true }).first().click();
   await expect(page.getByRole("heading", { name: /Help your neighbors find/ })).toBeVisible();
   await expect(page.getByText(/Community submissions are not enabled/)).toBeVisible();
