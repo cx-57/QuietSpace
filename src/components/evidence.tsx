@@ -11,9 +11,9 @@ export function ConfidenceLabel({ evidence }: { evidence: Reliability }) {
 }
 export function MatchExplanation({ match, expanded = false }: { match: MatchResult; expanded?: boolean }) {
   if (match.score === null) return <div className="match"><strong>{match.reason === "no_preferences" ? "Explore at your own pace" : "Not enough evidence for a match"}</strong>
-    <p className="small muted">{match.reason === "no_preferences" ? "Set sensory preferences to compare fit when enough observations are available." : "A match needs 3 recent approved observations per dimension, with noise and at least one other dimension."}</p></div>;
+    <p className="small muted">{match.reason === "no_preferences" ? "Set sensory preferences to compare fit when enough observations are available." : "A single-sense fit needs 3 approved observations for that sense. A multi-sense fit also needs noise and at least one other dimension with 3 observations each."}</p></div>;
   return <div className="match"><strong className="match-number">{match.score}/100 <span>preference fit</span></strong>
-    <p className="small muted">Historical observations · Conditions may change</p>
+    <p className="small muted">{match.dimensions.length === 1 ? "Single-sense fit · Other conditions may be unknown" : "Historical observations · Conditions may change"}</p>
     {expanded && <><p>{match.explanation}</p><ul>{match.dimensions.map(d => <li key={d.dimension}>{DIMENSION_LABELS[d.dimension]}: median {d.median}/5, {d.count} observations, {Math.round(d.effectiveWeight * 100)}% of available weight.</li>)}</ul>
       <p>Excluded: {match.excludedDimensions.map(d => DIMENSION_LABELS[d]).join(", ") || "none"}. Missing preferences or fewer than 3 observations exclude a dimension.</p></>}
   </div>;
