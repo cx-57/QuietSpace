@@ -30,6 +30,8 @@ These choices do **not** predict real noise, crowds, scents or brightness where 
 
 ## Community participation
 
+Read the [community contribution guidelines](CONTRIBUTING.md) for trustworthy source requirements, moderated sensory check-ins, public GitHub feedback and privacy expectations.
+
 - The `/community` route gives real counts of eligible approved observations, shows places that need firsthand reports, and links to public GitHub issue templates for suggesting new venues and improving the product. GitHub suggestions require the repository to be **public**, and users must sign in; issues and usernames are public.
 - Venues display up to six structured **approved** community sensory check-ins. There are no star ratings, free-text testimonials, accounts or synthetic public reviews. The page rounds visit dates to the month; **approved exact timestamps remain available in the public data** used for scoring, as disclosed on the privacy page.
 - Community report submission requires connected PostgreSQL/Supabase, trusted overwritten IP headers, a configured HTTPS origin, rate-limiting credentials and an operating moderator. Curated read-only mode never silently accepts data.
