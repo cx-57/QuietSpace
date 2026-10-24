@@ -13,10 +13,13 @@ export function SpaceDetail({ space, asOf }: { space: PublicSpace; asOf: string 
   const { preferences } = usePreferences();
   const now = new Date(asOf);
   const evidence = evidenceSummary(space.reports, space.id, now, space.timeZone);
+  const quietStudy = effectiveFacility(space.features.quiet_room, now);
+  const seekingQuiet = preferences.maximumIntensities.noise !== null && preferences.maximumIntensities.noise <= 2;
   return <>
     <StorageNotice />
     <div className="detail-grid"><section className="panel" aria-labelledby="fit-heading"><p className="eyebrow">PERSONAL, NOT PRESCRIPTIVE</p><h2 id="fit-heading">A fit for your day?</h2>
       <MatchExplanation match={scoreSpace(space.reports, preferences, space.id, now)} expanded />
+      {seekingQuiet && quietStudy.verification === "verified" && quietStudy.value === true && <p className="small muted">BPL lists a quiet/study space here. This helps you explore options, but does not establish the current noise level or generate a numeric match. <a href={quietStudy.sourceUrl}>Read the official source</a>.</p>}
       <Link href="/preferences">Adjust your preferences</Link>
     </section><section className="panel" aria-labelledby="evidence-heading"><p className="eyebrow">Evidence, separately</p><h2 id="evidence-heading">What we know so far</h2>
       <ConfidenceLabel evidence={evidence} />
