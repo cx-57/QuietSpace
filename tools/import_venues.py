@@ -22,9 +22,14 @@ DEFAULT_SOURCE = ROOT / "data/venues/boston-libraries.json"
 FEATURE_KEYS = ("accessible_entrance", "step_free_access", "accessible_toilet", "seating", "quiet_room")
 CATEGORIES = {"library", "park", "community_centre", "museum"}
 PROVENANCE = {"verified", "needs_review", "unverified"}
-# This curated batch is intentionally Boston-only. Expand this mapping only with
+# This curated batch uses allowlisted Boston Library, City and Museum sites. Expand it only with
 # a documented new region/source review; do not guess zones or trust an OS list.
-REGION_TIME_ZONES = {"www.bpl.org": "America/New_York"}
+REGION_TIME_ZONES = {
+    "www.bpl.org": "America/New_York",
+    "content.boston.gov": "America/New_York",
+    "www.boston.gov": "America/New_York",
+    "www.mfa.org": "America/New_York",
+}
 VENUE_FIELDS = {
     "slug", "name", "address", "category", "latitude", "longitude", "time_zone",
     "public_access", "source_url", "source_evidence", "checked_at", "provenance_status",
@@ -71,7 +76,7 @@ def source_url(value: object, label: str) -> str:
     except ValueError as exc:
         raise ValidationError(f"{label}: invalid official source URL") from exc
     if not valid:
-        raise ValidationError(f"{label}: HTTPS official BPL URL without credentials/query required")
+        raise ValidationError(f"{label}: HTTPS official venue-source URL without credentials/query required")
     return result
 
 
