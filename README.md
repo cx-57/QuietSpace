@@ -2,7 +2,7 @@
 
 Find a place that feels right. A calm neighborhood guide to public places, with private sensory preferences, source-reviewed facilities and moderated observations.
 
-The app includes discovery, strict access filters, local preference persistence, explainable matching, venue details, real PostgreSQL report submission, operator moderation, evidence reliability and historical periods. The directory starts with **five real Boston Public Library locations**. Their unknown sensory conditions remain unknown; no community observations were invented for these venues.
+The app includes discovery, strict access filters, local preference persistence, explainable matching, venue details, real PostgreSQL report submission, operator moderation, evidence reliability and historical periods. With a low-noise preference (1–2/5), default suggested ordering prioritizes fresh, source-listed quiet/study spaces among unscored venues. This is a **facility signal, never a noise measurement or fit score**; numeric matches still require sufficient approved reports. The directory starts with **five real Boston Public Library locations**. Their unknown sensory conditions remain unknown; no community observations were invented for these venues.
 
 ## Run the complete local app
 
