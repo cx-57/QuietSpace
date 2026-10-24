@@ -16,7 +16,7 @@ from tools.import_venues import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-AS_OF = datetime(2026, 10, 20, 23, 59, 59, tzinfo=timezone.utc)
+AS_OF = datetime(2026, 10, 23, 23, 59, 59, tzinfo=timezone.utc)
 
 
 class ImportTests(unittest.TestCase):
@@ -117,7 +117,7 @@ class ImportTests(unittest.TestCase):
             self.validate()
 
     def test_timestamp_and_timezone_validation(self):
-        for stamp in ("2026-02-30T12:00:00Z", "2026-10-20", "2026-10-20T18:00:00", "2026-10-21T00:00:00Z",
+        for stamp in ("2026-02-30T12:00:00Z", "2026-10-20", "2026-10-20T18:00:00", "2026-10-24T00:00:00Z",
                       "2026-10-20T12:00:00+00:99", "2026-10-20T12:00:00+14:01", "2026-10-20T12:00:00-23:00", None):
             with self.subTest(stamp=stamp):
                 document = deepcopy(self.document)
@@ -142,7 +142,7 @@ class ImportTests(unittest.TestCase):
 
     def test_feature_verification_requires_fresh_specific_evidence(self):
         for changes in ({"value": 1}, {"evidence": ""}, {"source_url": None}, {"checked_at": "2026-01-01T00:00:00Z"},
-                        {"checked_at": "2026-10-21T00:00:00Z"}, {"verification": "community_reported"}):
+                        {"checked_at": "2026-10-24T00:00:00Z"}, {"verification": "community_reported"}):
             with self.subTest(changes=changes):
                 document = deepcopy(self.document)
                 document["venues"][0]["features"]["accessible_entrance"].update(changes)
