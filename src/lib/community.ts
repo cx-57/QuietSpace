@@ -1,7 +1,7 @@
 import type { ApprovedReport, Directory, Intensities, PublicSpace } from "./contracts.ts";
 import { eligibleReports } from "./sensory-score.ts";
 
-/** Approved observations only; timestamps are deliberately rounded to a month for public review cards. */
+/** Approved observations only; the UI displays a month, but public report API data retains exact timestamps. */
 export function communityReviews(space: PublicSpace, now: Date, limit = 6): Array<{ id: string; month: string; intensities: Intensities }> {
   return eligibleReports(space.reports, space.id, now)
     .sort((a, b) => Date.parse(b.observedAt) - Date.parse(a.observedAt) || a.id.localeCompare(b.id))
