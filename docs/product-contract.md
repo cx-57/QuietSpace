@@ -34,7 +34,7 @@ P0 includes filters, 11 real public venues, details, explainable matching, anony
 
 ## Matching and reliability
 
-Weights: noise 0.40, crowds 0.25, brightness 0.20, scent 0.15. Eligibility is per dimension: at least 3 approved, non-fixture observations in the rolling last 60 days, neither future nor stale, and a non-null preference. A number requires at least two eligible dimensions including noise. Otherwise `score: null` with `insufficient_evidence` or `no_preferences`.
+Weights: noise 0.40, crowds 0.25, brightness 0.20, scent 0.15. Eligibility is per dimension: at least 3 approved, non-fixture observations in the rolling last 60 days, neither future nor stale, and a non-null preference. When a visitor selects exactly one sensory dimension, a labeled **single-sense fit** is allowed after 3 approved, recent reports for that dimension. It describes only that sense, not overall suitability. When a visitor selects multiple dimensions, a numeric fit still requires at least two eligible dimensions including noise. Otherwise `score: null` with `insufficient_evidence` or `no_preferences`.
 
 For eligible dimensions use median observed intensity. Noise/crowd/scent fit is `max(0, 1 - max(0, median - preferredMaximum) / 4)`. Brightness fit is `max(0, 1 - abs(median - preferredLevel) / 4)`, following the explicit Stage 07 prompt. Renormalize eligible weights, compute weighted fit × 100, round only at the end. Lower noise, crowds and scent are not penalized; brightness is penalized for distance in either direction. Explain dimension values, sample counts, excluded dimensions and effective weights. This is a documented heuristic, never a clinical measure or a promise about current conditions. This clarifies the earlier all-maximum equation to follow the now-authorized Stage 07 requirement.
 
@@ -57,7 +57,7 @@ Errors are a discriminated code + safe message + optional field errors: `setup_r
 ## Contract review journeys
 
 1. Noise-sensitive visitor with a required step-free route: sourced venue with only “accessible entrance” evidence stays unknown for step-free access and fails strict filtering. No reports means no numeric match.
-2. Visitor with preferred brightness 3 and no noise preference: browse still works; no numeric match because noise is not eligible. A null scent observation does not become zero.
+2. Visitor with preferred brightness 3 and no noise preference: browse works with unknown sensory conditions until at least 3 approved brightness observations exist. Then a clearly labeled **single-sense fit** may appear, without claiming overall suitability. A null scent observation does not become zero.
 3. Anonymous contributor submits noise 2, other dimensions null: accepted only via the enabled protected server route, remains pending and contributes nothing until trusted approval. Sending `status: approved` is invalid.
 4. Empty/unconfigured database in supabase mode: explicit setup/empty state; no demo observations or scores injected. Database outage shows a recoverable unavailable state, never a fabricated empty successful query.
 

@@ -28,7 +28,8 @@ export function median(values: number[]): number {
 }
 
 export function scoreSpace(reports: ApprovedReport[], preferences: Preferences, spaceId: string, now: Date): MatchResult {
-  if (DIMENSIONS.every(d => preferences.maximumIntensities[d] === null)) return { score: null, reason: "no_preferences" };
+  const selectedDimensions = DIMENSIONS.filter(d => preferences.maximumIntensities[d] !== null);
+  if (selectedDimensions.length === 0) return { score: null, reason: "no_preferences" };
   const eligible = eligibleReports(reports, spaceId, now);
   const dimensions: Array<{ dimension: Dimension; median: number; count: number; effectiveWeight: number }> = [];
   for (const dimension of DIMENSIONS) {
@@ -38,7 +39,12 @@ export function scoreSpace(reports: ApprovedReport[], preferences: Preferences, 
       dimensions.push({ dimension, median: median(values), count: values.length, effectiveWeight: WEIGHTS[dimension] });
     }
   }
-  if (dimensions.length < 2 || !dimensions.some(d => d.dimension === "noise")) return { score: null, reason: "insufficient_evidence" };
+  // A one-sense preference should be usable with three real observations of that sense.
+  // Multi-sense fit retains the stricter noise + another-dimension evidence gate.
+  if (dimensions.length < (selectedDimensions.length === 1 ? 1 : 2) ||
+      (selectedDimensions.length > 1 && !dimensions.some(d => d.dimension === "noise"))) {
+    return { score: null, reason: "insufficient_evidence" };
+  }
   const totalWeight = dimensions.reduce((sum, d) => sum + d.effectiveWeight, 0);
   let score = 0;
   for (const d of dimensions) {
@@ -50,7 +56,7 @@ export function scoreSpace(reports: ApprovedReport[], preferences: Preferences, 
   return {
     score: Math.round(score), reason: "eligible", dimensions,
     excludedDimensions: DIMENSIONS.filter(d => !dimensions.some(item => item.dimension === d)),
-    explanation: "Preference fit uses median intensities from approved observations in the last 60 days. Noise, crowds and scent use your maximum; brightness uses closeness to your selected level. Available weights are renormalized. This is a heuristic, not a guarantee of current conditions.",
+    explanation: `${selectedDimensions.length === 1 ? "Single-sense fit describes only the sense you chose, not overall suitability. " : ""}Preference fit uses median intensities from approved observations in the last 60 days. Noise, crowds and scent use your maximum; brightness uses closeness to your selected level. Available weights are renormalized. This is a heuristic, not a guarantee of current conditions.`,
   };
 }
 
