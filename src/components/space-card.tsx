@@ -28,7 +28,7 @@ export function SpaceCard({ space, match, now, index = 1, seekingQuiet = false }
       <ConfidenceLabel evidence={evidenceSummary(space.reports, space.id, now, space.timeZone)} /></div>
       <p className="source-line"><a href={space.source.sourceUrl}>Official venue source</a><span>Reviewed <SourceDate value={space.source.checkedAt} /></span></p>
     </div>
-    <div className="place-action">{match.score !== null ? <div className="fit-score"><strong>{match.score}<small>/100</small></strong><span>preference fit</span></div> : <p className="unscored-label">{seekingQuiet && sourceListedQuiet ? "Documented study space" : match.reason === "no_preferences" ? "Your next place?" : "More evidence needed"}<span>{seekingQuiet && sourceListedQuiet ? "Current noise unknown · no score yet" : match.reason === "no_preferences" ? "Make it personal in preferences" : "No match score yet"}</span></p>}
+    <div className="place-action">{match.score !== null ? <div className="fit-score"><strong>{match.score}<small>/100</small></strong><span>preference fit</span></div> : <p className="unscored-label">{seekingQuiet && sourceListedQuiet ? "Listed study area" : match.reason === "no_preferences" ? "Explore this place" : "Sensory fit unknown"}<span>{seekingQuiet && sourceListedQuiet ? "Current noise unknown · no score yet" : match.reason === "no_preferences" ? "Source-backed venue details" : "Not enough approved observations"}</span></p>}
       <Link className="place-open" href={`/spaces/${space.slug}`} aria-label={`View details: ${name}`}><Icon name="arrow" size={22} /></Link>
     </div>
   </article>;
