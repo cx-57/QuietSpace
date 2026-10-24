@@ -11,7 +11,9 @@ test("curated directory has 11 sourced places with unknown sensory evidence", ()
     assert.equal(space.id, row.slug);
     assert.equal(space.reports.length, 0);
     assert.equal(space.features.step_free_access.value, null);
-    assert.equal(adaptFacility(row.features.accessible_entrance, now).value,
+    assert.equal(adaptFacility(row.features.accessible_entrance ?? {
+      verification: "unknown", value: null, source_url: null, checked_at: null, evidence: null
+    }, now).value,
       row.features.accessible_entrance?.verification === "verified" ? true : null);
   }
 });
