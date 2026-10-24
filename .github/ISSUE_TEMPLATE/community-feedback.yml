@@ -1,0 +1,34 @@
+name: Community usability feedback
+description: Suggest a product improvement without sharing private or medical information
+title: "[Community feedback] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Feedback is public and reviewed by maintainers. Do not disclose personal information, diagnoses, or precise visit histories. This form is for how the app works, not a sensory observation. To report an actual visit, use the in-app moderated report form when available.
+  - type: dropdown
+    id: area
+    attributes:
+      label: What could be improved?
+      options:
+        - Finding an appropriate space
+        - Understanding the evidence
+        - Community contribution flow
+        - Accessibility or keyboard experience
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What did you try, and what was confusing?
+      description: Please describe only the product behavior, not personal circumstances.
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Suggested improvement
+    validations:
+      required: false
