@@ -1,20 +1,28 @@
-# Curated real venue sheet
+# Curated Boston venue sheet
 
-`boston-libraries.json` contains five real Boston Public Library venues. Boston is an explicit initial demo region selected because no region was specified. These are publicly listed library buildings, not restricted refuges, individual rooms or school-only locations. **Source verification is not an on-site audit or proof of quietness.** None has community observations in this dataset.
+`boston-libraries.json` is a historical file name retained for compatibility. It now contains **11 real, sourced public places** across Boston: **8 BPL libraries, 2 city parks/gardens and 1 ticketed art museum**. Reviewed public venue facts and facilities come from official Boston Public Library, City of Boston or Museum of Fine Arts websites; a listing is **not** a sensory observation.
 
-Reviewed 2026-10-20 through the official location pages. Kept only names, public street addresses, source notes and narrowly supported entrance evidence; no images, scraped descriptions, hours, geocoded coordinates, report counts or sensory ratings are copied. Coordinates and unverified facilities remain null/unknown. All public listings still depend on runtime RLS validation before deployment.
+Each place has publicly verifiable identity, address and source links. We store **no invented noise, crowd, brightness, scent, opening status, hours, coordinates, popularity metrics or visitor reviews**. Only facility attributes explicitly listed by sources are marked verified; absence of a listing remains unknown, not false. A public park is not necessarily quiet or uncrowded, and a museum may require a paid ticket.
 
-| Venue | Official evidence | Review limits |
+## Official venue sources
+
+| Place | Category | Verified facility information |
 | --- | --- | --- |
-| Central | [Location and Facilities](https://www.bpl.org/locations/central/) | Address: 700 Boylston Street. Entrance evidence and separately sourced Bates Hall study-space evidence. |
-| Brighton | [Location and Facilities](https://www.bpl.org/locations/brighton/) | Address: 40 Academy Hill Road. Entrance evidence only. |
-| Connolly | [Location and Facilities](https://www.bpl.org/locations/connolly/) | Address: 433 Centre Street. Page retained a past October 15 closure notice; no opening promise imported. |
-| East Boston | [Location and Facilities](https://www.bpl.org/locations/east-boston/) | Address: 365 Bremen Street. Official quiet/study room(s) listing; no measured noise. |
-| South Boston | [Location and Facilities](https://www.bpl.org/locations/south-boston/) | Address: 646 East Broadway. Events listed; no sensory inference. |
+| [Central Library / Bates Hall](https://www.bpl.org/central-library-points-of-interest/) | Library | Officially described reading/study hall; [accessible entrance](https://www.bpl.org/locations/central/) |
+| [Brighton Branch](https://www.bpl.org/locations/brighton/) | Library | Accessible entrance |
+| [Connolly Branch](https://www.bpl.org/locations/connolly/) | Library | Accessible entrance |
+| [East Boston Branch](https://www.bpl.org/locations/east-boston/) | Library | Quiet/study room listing; accessible entrance |
+| [South Boston Branch](https://www.bpl.org/locations/south-boston/) | Library | Accessible entrance |
+| [Grove Hall Branch](https://www.bpl.org/locations/grove-hall/) | Library | Quiet/study room listing; entrance accessibility unverified in reviewed facilities list |
+| [Jamaica Plain Branch](https://www.bpl.org/locations/jamaica-plain/) | Library | Quiet/study room listing; accessible entrance |
+| [Mattapan Branch](https://www.bpl.org/locations/mattapan/) | Library | Quiet/study room listing; accessible entrance |
+| [Boston Common](https://content.boston.gov/parks/boston-common) | Park | [Benches and shaded seating listed by the City](https://content.boston.gov/departments/disabilities-commission/accessible-and-sensory-friendly-features-boston-parks) |
+| [Boston Public Garden](https://content.boston.gov/parks/public-garden) | Park | [Benches and shaded seating listed by the City](https://content.boston.gov/departments/disabilities-commission/accessible-and-sensory-friendly-features-boston-parks) |
+| [Museum of Fine Arts, Boston](https://www.mfa.org/visit) | Museum | [Ramped, power-assisted Huntington Avenue entrance](https://www.mfa.org/visit/getting-here); check ticket requirements and prices with MFA |
 
-The pages identify these as public-library locations and list accessible entrance facilities. Separate source reviews on October 23 verified **Bates Hall at Central Library** as a quiet-study reading room ([official description](https://www.bpl.org/central-library-points-of-interest/)) and **East Boston** as listing quiet/study rooms ([official facility list](https://www.bpl.org/locations/east-boston/)). The existing `quiet_room` key is labeled `Quiet/study space` in the UI: it denotes a source-listed quiet-use facility, not an enclosed silent room or a sensory reading. When someone selects a low noise preference (1–2), fresh verified study-space evidence prioritizes otherwise unscored venues. Missing listings stay unknown, and **no sensory intensity or matching score is generated** by this fallback. This is not evidence of accessible toilets, a step-free internal route, available seating, room reservation rights, current opening, scent levels, light intensity or crowd/noise conditions. Unknown facilities omitted from JSON expand into explicit null rows in SQL.
+The noise preference (1–2) puts **verified library study areas** ahead of other unscored venues. Other sensory choices remain meaningful as private preferences but do not invent empirical rankings when community evidence is missing. Visitors can explore libraries, outdoor parks/gardens and museums separately. Required facilities remain strict: unknown never passes. Official park listings for **specific stair-free destinations** must not be misrepresented as a guarantee that every path is step-free.
 
-No bulk harvesting is implemented. This is a hand-curated factual inventory with attribution. The linked [BiblioCommons terms](https://bpl.bibliocommons.com/info/terms) were inspected on 2026-10-20: they address linking, content rights and limits on automated harvesting. This is not a claim of a broad reuse license; no catalog entries, user contributions, photographs or descriptive prose are republished. Source links accompany the factual records. No endorsement is implied.
+The source timestamp is the review time, not the time a visitor experienced the space. Facts expire after 90 days. This is a small, manually reviewed inventory, not a claim of a citywide audit or sponsor endorsement. No coordinates or third-party photographs are embedded in the venue dataset.
 
 ## Format and offline commands
 
@@ -26,9 +34,9 @@ python tools/import_venues.py --output artifacts/venues.sql
 python -m unittest discover -s tests -p "test_*.py" -v
 ```
 
-The default command **validates only**; no credentials or network requests. `--output` generates a transactional PostgreSQL file for review. It cannot connect to a database. For reproducible historical test evidence use `--as-of 2026-10-20T23:59:59Z`; this does not renew source verification or permit bypassing database-time freshness rules. Normal imports use the actual clock and reject stale published rows.
+The default command **validates only**; no credentials or network requests. `--output` generates a transactional PostgreSQL file for review. It cannot connect to a database. For reproducible historical test evidence use `--as-of 2026-10-23T23:59:59Z`; this does not renew source verification or permit bypassing database-time freshness rules. Normal imports use the actual clock and reject stale published rows.
 
-Every venue field is explicit; extra fields are rejected, preventing invented observation metadata entering through the import. `checked_at` is source-review time, not visit time. Supported categories and feature keys align with the SQL/TypeScript contracts. The initial source allowlist and region time zone live in the importer and must be reviewed before a new region is added.
+Every venue field is explicit; extra fields are rejected, preventing invented observation metadata entering through the import. `checked_at` is source-review time, not visit time. Supported categories and feature keys align with the SQL/TypeScript contracts. The explicit Boston source-host allowlist and region time zone live in the importer; adding new hosts/regions requires a source review, not a blind whitelist.
 
 Duplicate slugs, normalized names, normalized addresses and canonical source URLs fail the whole batch rather than silently merge. Unknown/restricted access, fixtures, missing/bad sources, invalid or partial coordinates, future source checks, stale published facts and malformed feature evidence fail closed. For stale/broken sources: set venue `provenance_status` to `needs_review`, `published` to false, and expired features to unknown/null; retain the last actual review timestamp. A live source health check is manual; this offline tool cannot detect a URL that has stopped working.
 
