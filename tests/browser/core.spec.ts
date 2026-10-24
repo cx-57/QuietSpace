@@ -30,10 +30,10 @@ test("preferences persist through reload and details; search, strict filters and
 });
 
 test("quiet-seeking users get documented study options before unverified places", async ({ page }) => {
-  await page.goto("/preferences");
-  await page.getByLabel("Noise", { exact: true }).selectOption("1");
-  await page.getByRole("link", { name: "Explore with these preferences" }).click();
+  await page.goto("/");
+  await page.getByRole("button", { name: "Find quiet study spaces" }).click();
   await expect(page.getByText(/Quiet preference active: source-listed quiet\/study spaces appear first/)).toBeVisible();
+  await expect(page.getByRole("button", { name: "Quiet preference on · Clear" })).toHaveAttribute("aria-pressed", "true");
   const cards = page.locator(".space-card");
   await expect(cards).toHaveCount(5);
   await expect(cards.nth(0).getByText("Documented study space")).toBeVisible();
