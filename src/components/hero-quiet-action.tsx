@@ -4,7 +4,8 @@ import { Icon } from "./icon";
 
 /** Quick paths to configurable discovery, never guaranteed conditions. */
 export function HeroExploreAction() {
-  return <button className="button" type="button" onClick={() => {
+  const ready = useHydrated();
+  return <button className="button" type="button" disabled={!ready} onClick={() => {
     document.getElementById("discovery-choices-title")?.scrollIntoView({ behavior: "auto", block: "start" });
   }}>Choose your environment <Icon name="arrow" /></button>;
 }
