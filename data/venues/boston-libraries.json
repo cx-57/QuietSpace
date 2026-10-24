@@ -228,6 +228,81 @@
           "evidence": "Official Mattapan Facilities list includes quiet/study room(s). It does not establish real-time noise, availability or access rules."
         }
       }
+    },
+    {
+      "slug": "boston-common",
+      "name": "Boston Common",
+      "address": "139 Tremont Street, Boston, MA 02111",
+      "category": "park",
+      "latitude": null,
+      "longitude": null,
+      "time_zone": "America/New_York",
+      "public_access": "public",
+      "source_url": "https://content.boston.gov/parks/boston-common",
+      "source_evidence": "The City of Boston identifies Boston Common as a public park and lists its public visitor information address. Park use varies by time and event; no sensory observations are available.",
+      "checked_at": "2026-10-23T20:00:00Z",
+      "provenance_status": "verified",
+      "published": true,
+      "is_fixture": false,
+      "features": {
+        "seating": {
+          "verification": "verified",
+          "value": true,
+          "source_url": "https://content.boston.gov/departments/disabilities-commission/accessible-and-sensory-friendly-features-boston-parks",
+          "checked_at": "2026-10-23T20:00:00Z",
+          "evidence": "The City's accessible-parks table lists benches along pathways and shaded seating at Boston Common. It does not establish current availability."
+        }
+      }
+    },
+    {
+      "slug": "boston-public-garden",
+      "name": "Boston Public Garden",
+      "address": "4 Charles Street, Boston, MA 02116",
+      "category": "park",
+      "latitude": null,
+      "longitude": null,
+      "time_zone": "America/New_York",
+      "public_access": "public",
+      "source_url": "https://content.boston.gov/parks/public-garden",
+      "source_evidence": "The City of Boston identifies the Public Garden as a public outdoor garden at this address. Its noise, crowding, brightness and scent vary and have not been measured by QuietSpace.",
+      "checked_at": "2026-10-23T20:00:00Z",
+      "provenance_status": "verified",
+      "published": true,
+      "is_fixture": false,
+      "features": {
+        "seating": {
+          "verification": "verified",
+          "value": true,
+          "source_url": "https://content.boston.gov/departments/disabilities-commission/accessible-and-sensory-friendly-features-boston-parks",
+          "checked_at": "2026-10-23T20:00:00Z",
+          "evidence": "The City's park-accessibility table lists benches with wheelchair spaces, benches along pathways and shaded seating. It does not establish current availability."
+        }
+      }
+    },
+    {
+      "slug": "mfa-boston",
+      "name": "Museum of Fine Arts, Boston",
+      "address": "465 Huntington Avenue, Boston, MA 02115",
+      "category": "museum",
+      "latitude": null,
+      "longitude": null,
+      "time_zone": "America/New_York",
+      "public_access": "public",
+      "source_url": "https://www.mfa.org/visit",
+      "source_evidence": "The museum's official visitor page provides the public address, admission and ticketing information. Entry generally requires a ticket. Gallery atmosphere and sensory conditions are not verified.",
+      "checked_at": "2026-10-23T20:00:00Z",
+      "provenance_status": "verified",
+      "published": true,
+      "is_fixture": false,
+      "features": {
+        "accessible_entrance": {
+          "verification": "verified",
+          "value": true,
+          "source_url": "https://www.mfa.org/visit/getting-here",
+          "checked_at": "2026-10-23T20:00:00Z",
+          "evidence": "The MFA states that its Huntington Avenue main entrance has ramps and power-assisted doors. This does not confirm conditions across every gallery."
+        }
+      }
     }
   ]
 }
