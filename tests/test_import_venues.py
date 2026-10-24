@@ -114,7 +114,7 @@ class ImportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValidationError, "stale"):
             self.validate()
         self.document["venues"][0].update(published=False, provenance_status="needs_review")
-        self.assertEqual(len(self.validate()), 5)
+        self.assertEqual(len(self.validate()), 11)
 
     def test_unverified_published_source_rejected(self):
         self.document["venues"][0]["provenance_status"] = "unverified"
