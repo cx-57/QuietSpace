@@ -311,7 +311,7 @@ a,p,h1,h2,h3,dd { overflow-wrap:anywhere; }
 .choice-pill { min-height:37px; border-radius:40px; padding:.35rem .85rem; background:transparent; border:1px solid var(--line); color:var(--ink); font-size:.7rem; font-weight:600; }
 .choice-pill:hover,.choice-pill[aria-pressed="true"] { background:var(--ink); color:var(--surface); border-color:var(--ink); }
 .verified-checks { display:flex; flex-wrap:wrap; gap:.6rem 1rem; }
-.verified-checks label { display:inline-flex; align-items:center; gap:.45rem; min-height:37px; cursor:pointer; font-size:.76rem; }
+.verified-checks .choice-pill { display:inline-flex; align-items:center; min-height:37px; cursor:pointer; font-size:.7rem; }
 .verified-choices .small { margin-top:.5rem; font-size:.65rem; }
 .fine-tune { border-top:1px solid var(--line); padding-block:.8rem; }
 .fine-tune summary { display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-size:.8rem; font-weight:650; min-height:42px; }
