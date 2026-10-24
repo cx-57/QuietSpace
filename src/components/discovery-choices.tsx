@@ -1,5 +1,5 @@
 "use client";
-import type { Directory, FeatureKey, Preferences, PublicSpace } from "../lib/contracts";
+import type { Directory, FeatureKey, PublicSpace } from "../lib/contracts";
 import { DIMENSIONS } from "../lib/contracts";
 import { activePresetId, DISCOVERY_PRESETS, selectPreset } from "../lib/discovery-presets";
 import { DIMENSION_LABELS } from "../lib/preferences";
